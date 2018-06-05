@@ -1,0 +1,10 @@
+# reference: Soderberg et al. 2003
+# https://www.nature.com/articles/nature02757/tables/1
+# flux in mJy
+# distance is z=0.105
+dt,flux,fluxerr
+4.43,0.393,0.060
+13.46,0.520,0.060
+22.48,0.583,0.064
+31.41,0.728,0.055
+35.34,0.624,0.050

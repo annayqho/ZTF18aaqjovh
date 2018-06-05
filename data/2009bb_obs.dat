@@ -1,0 +1,8 @@
+# from Soderberg et al. (2010)
+# mJy
+# 40 Mpc = z = 0.009
+# assuming an explosion date of Mar 19
+dt,flux,fluxerr
+19.2,12.863,0.161
+34.2,7.601,0.226
+40.1,7.632,0.202

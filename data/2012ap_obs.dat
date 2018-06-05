@@ -1,0 +1,5 @@
+# from Chakraborti et al. (2012)
+# mJy
+# 40 Mpc = z = 0.009
+dt,flux,fluxerr
+37.9,4.20,0.10
