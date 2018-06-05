@@ -12,7 +12,6 @@ from astropy.io import ascii
 import numpy as np
 import matplotlib.pyplot as plt
 plt.rc("font", family="serif")
-from get_names import *
 
 
 def mast():
@@ -146,10 +145,9 @@ if __name__=="__main__":
     vmin = 10
     vmax = 100
 
-    fig,axarr = plt.subplots(1,1, figsize=(6,5))
-    for ii,ax in enumerate(axarr.reshape(-1)):
-        fname = ps1(ra, dec) # file saved by this function
-        plot(ax, fname, vmin, vmax)
+    fig,ax= plt.subplots(1,1, figsize=(6,5))
+    fname = ps1(ra, dec) # file saved by this function
+    plot(ax, fname, vmin, vmax)
     plt.subplots_adjust(wspace=0.1, hspace=0.01)
     #plt.savefig("host_grid_afterglows.png")
     plt.show()
