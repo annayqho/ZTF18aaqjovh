@@ -149,6 +149,6 @@ if __name__=="__main__":
     fname = ps1(ra, dec) # file saved by this function
     plot(ax, fname, vmin, vmax)
     plt.subplots_adjust(wspace=0.1, hspace=0.01)
-    #plt.savefig("host_grid_afterglows.png")
-    plt.show()
+    plt.savefig("host_cutout.png")
+    #plt.show()
 
