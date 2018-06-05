@@ -108,13 +108,13 @@ def plot(ax, fname, vmin_val, vmax_val):
     values = np.ma.masked_invalid(image_data.flatten())
     counts = np.ma.masked_invalid(image_data[::-1])
     ax.imshow(
-            np.arcsinh(counts), cmap='viridis_r', 
+            np.arcsinh(counts), cmap='Greys_r', 
             vmin=np.percentile(np.arcsinh(values), vmin_val),
             vmax=np.percentile(np.arcsinh(values), vmax_val))
     # N up, E left
     ax.axis('off')
 
-    ax.scatter(60, 60, marker='x', color='white', s=40, linewidths=0.5)
+    ax.scatter(60, 60, marker='x', color='white', s=60, linewidths=1.0)
 
     # compass markings
     # ax.annotate("", xy=(10, 9), xytext=(35,9),
@@ -131,18 +131,18 @@ def plot(ax, fname, vmin_val, vmax_val):
 
     # line to show scale
     ax.annotate("", xy=(70,110), xytext=(110,110),
-            arrowprops=dict(arrowstyle="-"))
+            arrowprops=dict(arrowstyle="-", color='white'))
     ax.annotate(
             "10''", xy=(90,110), fontsize=11, 
             horizontalalignment='center',
-            verticalalignment='bottom')
+            verticalalignment='bottom', color='white')
 
 
 if __name__=="__main__":
     ra = 178.181754 
     dec = 25.675033
 
-    vmin = 10
+    vmin = 90
     vmax = 100
 
     fig,ax= plt.subplots(1,1, figsize=(6,5))
