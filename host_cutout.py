@@ -5,7 +5,7 @@ import glob
 import requests
 from requests.exceptions import ConnectionError
 from astroquery.mast import Observations
-from astropy import coordinates
+from astropy.coordinates import SkyCoord
 import astropy.units as u
 from astropy.io import fits
 from astropy.io import ascii
@@ -139,14 +139,19 @@ def plot(ax, fname, vmin_val, vmax_val):
 
 
 if __name__=="__main__":
-    ra = 178.181754 
-    dec = 25.675033
+    ra_sn = 178.181754 
+    dec_sn = 25.675033
+    coords_radio = SkyCoord(
+            ra="11h52m43.63s", dec="25d40m30.1s", frame='icrs')
+    names = ["Optical", "Radio"]
+    ras = [ra_sn, coords_radio.ra.deg]
+    decs = [dec_sn, coords_radio.dec.deg]
 
     vmin = 90
     vmax = 100
 
     fig,ax= plt.subplots(1,1, figsize=(6,5))
-    fname = ps1(ra, dec) # file saved by this function
+    fname = ps1(ra_sn, dec_sn) # file saved by this function
     plot(ax, fname, vmin, vmax)
     plt.subplots_adjust(wspace=0.1, hspace=0.01)
     plt.savefig("host_cutout.png")
