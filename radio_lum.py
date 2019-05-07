@@ -23,13 +23,14 @@ import astropy.units as u
 
 
 # current values from the data, uJy, z=0.054
-dt = np.array([6, 11])
-f = np.array([32.5, 29.6])
+dt = np.array([6, 11, 23])
+f = np.array([32.5, 29.6, 26.6])
 flux = f * 10**-6 * 10**-23
 z = 0.054
 dL = Planck15.luminosity_distance(z=z)
 lum = 4 * np.pi * dL.cgs.value**2 * flux / (1+z)
 plt.scatter(dt, lum, c='k', marker='s')
+#plt.scatter(dt+10, lum, marker='s', facecolors='white', edgecolors='k')
 
 
 # mJy, z=0.105
@@ -97,12 +98,14 @@ plt.text(dt[0], lum[0]*1.2, s='2012ap', horizontalalignment='center')
 
 
 plt.xlim(0,40)
-plt.xlabel("Days since explosion or first det", fontsize=16)
+plt.xlabel("Days since discovery", fontsize=16)
 #plt.ylabel("$4 \pi d_L^2 F_\mathrm{radio} / (1+z)$ erg/Hz/s", fontsize=16)
-plt.ylabel(r"Radio Lum. near $5\,$GHz [erg/Hz/s]", fontsize=16)
-
+plt.ylabel(r"$L_{\nu=5\,\mathrm{GHz}}$ [erg/Hz/s]", fontsize=16)
 plt.yscale('log')
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
 
 plt.tight_layout()
 
+#plt.show()
 plt.savefig("radio_lum.png")
