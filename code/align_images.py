@@ -16,7 +16,7 @@ dec = 25.675033
 size = 600
 
 swarp_command = swarp_path \
-        + " %s %s %s -c config.swarp -CENTER '" %(gfits,rfits,zfits)\
+        + " %s %s %s %s %s -c config.swarp -CENTER '" %(gfits,rfits,ifits,zfits,ufits)\
         + str(ra) + " " + str(dec) \
         + "' -SUBTRACT_BACK Y -RESAMPLE Y -COMBINE N -IMAGE_SIZE '" \
         + str(size) + "," + str(size) + "'"
