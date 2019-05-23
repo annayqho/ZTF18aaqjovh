@@ -18,6 +18,34 @@ z = 0.03154
 SPEC_DIR = "Data/marshal/spectra/ZTF18aaqjovh"
 
 
+def get_res(tel):
+    """ Here, this means the width of a line in Angstroms """
+    if tel == 'LT':
+        res = 18 # Angstrom, res at central wavelength
+        res = 30 # add a couple of Ang?
+    elif tel == 'P200':
+        res = 10 # determined by eye from the spectrum
+        # basically, width of a galaxy emission line is 10 AA
+        # and each pixel is 1 AA
+    elif tel == 'Keck1':
+        res = 7*2 # determined by eye from spectrum
+        # width of a line is around 7 pixels
+        # and each pixel is 2 Angstroms
+    elif tel == 'NOT':
+        # width of a line is around 8 pixels
+        # and each pixel is around 2.63 Ang
+        res = 8*2.63
+    elif tel == 'DCT':
+        # width of a line is around 7 pixels
+        # and each pixel is 2.2 Ang
+        res = 7*2.2
+    elif tel == 'P60':
+        res = 20
+    else:   
+        print("I don't have this telescope")
+    return res
+
+
 def download_spec():
     """ Download the spectra """
     # connect to databases
@@ -107,6 +135,28 @@ def load_spec(f):
     return wl, f
 
 
+def plot_smoothed_spec(ax, x, y, ivar, tel, epoch, ls='-', lw=0.5, c='black', label=None, text=True):
+    """ plot the smoothed spectrum """
+    res = get_res(tel)
+    temp = get_temp(epoch)
+    choose_x = np.logical_and(x >= 3200, x<= 9300)
+    choose = choose_x 
+    smoothed = smooth_spec(x, y, ivar, res*3)
+    ax.plot(
+            x[choose], smoothed[choose], c=c,
+            drawstyle='steps-mid', lw=lw, ls=ls, alpha=1.0, label=label,
+            zorder=10)
+    dt_str = r"+%s\,d ($T=%s\,$kK)" %(
+            str(np.round(epoch, 1)), (int(round_sig(temp/1000))))
+    if text:
+        ax.text(
+                x[choose][-1]+100, smoothed[choose][-1],  s=dt_str,
+                horizontalalignment='left', verticalalignment='center',
+                fontsize=12)
+    return smoothed
+
+
+
 if __name__=="__main__":
     fig,ax = plt.subplots()
     files, epochs, tels = get_files(0, 6)
@@ -127,4 +177,6 @@ if __name__=="__main__":
     plt.ylim(-10, 0)
     plt.xlabel(r"Observed Wavelength (\AA)", fontsize=16)
     plt.ylabel(r"Scaled $F_{\lambda}$ + const.", fontsize=16)
+    ax.get_yaxis().set_ticks([])
+    plt.tight_layout()
     plt.show()
