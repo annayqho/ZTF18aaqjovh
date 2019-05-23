@@ -1,7 +1,4 @@
-""" Plot the light curve of ZTF18aaqjovh
-
-Light curve was retrieved in ZTF_Tools/query_lc.py,
-and saved to a text file lc.dat
+""" Plot the spectral sequence of ZTF18aaqjovh
 """
 
 import matplotlib.pyplot as plt
@@ -12,16 +9,23 @@ from astropy.io import ascii
 from ztfquery import query
 from ztfquery import marshal
 import extinction
+import glob
 
 
-def download_lc():
-    """ Download the light curve """
+def download_spec():
+    """ Download the spectra """
     # connect to databases
     m = marshal.MarshalAccess()
     print("Connected")
 
     # download light curves
-    marshal.download_lightcurve('ZTF18aaqjovh')
+    marshal.download_spectra('ZTF18aaqjovh')
+
+    # return filenames
+    ddir = "Data/marshal/spectra/ZTF18aaqjovh"
+    f = glob.glob(ddir + "/*.ascii")
+    print(f)
+    return f
 
 
 def load_marshal_lc():
@@ -74,4 +78,4 @@ def load_danny_lc():
 
 
 if __name__=="__main__":
-    load_danny_lc()
+    download_spec()
