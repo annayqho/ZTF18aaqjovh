@@ -3,6 +3,9 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import rc
+rc("font", family="serif")
+rc("text", usetex=True)
 from astropy.io import fits
 import astropy.wcs
 from astropy import coordinates as coords
@@ -13,6 +16,8 @@ dec = 25.6750332
 
 ddir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data/host_sdss"
 
+# images have been resampled using SWARP,
+# because they were previously out of alignment
 gim = fits.open(ddir + "/frame-g-005116-5-0061.resamp.fits")
 g = gim[0].data # 0 to 0.1 looks good
 r = fits.open( # 0 to 0.2 looks good
@@ -27,11 +32,12 @@ i = fits.open(
 # Figure out pos from header
 head = gim[0].header
 wcs = astropy.wcs.WCS(head)
+print(3600*astropy.wcs.utils.proj_plane_pixel_scales(wcs))
 target_pix = wcs.all_world2pix([(np.array([ra,dec], np.float_))], 1)[0]
 xpos = target_pix[0]
 ypos = target_pix[1]
  
-imsize = 120
+imsize = 50
 # Plot cutout
 gcut = g[int(ypos-imsize):int(ypos+imsize),int(xpos-imsize):int(xpos+imsize)]
 rcut = r[int(ypos-imsize):int(ypos+imsize),int(xpos-imsize):int(xpos+imsize)]
@@ -44,9 +50,29 @@ icut = i[int(ypos-imsize):int(ypos+imsize),int(xpos-imsize):int(xpos+imsize)]
 # gcut: vmin = 0, vmax = 0.2
 
 rgb = make_lupton_rgb(
-        icut/2, rcut/1.5, gcut, Q=4, stretch=0.2)
-plt.imshow(rgb, origin='lower')
+        icut/2, rcut/1.5, gcut, Q=2, stretch=0.25)
+
+fig,ax = plt.subplots()
+
+ax.imshow(rgb, origin='lower')
+ax.scatter(imsize, imsize, c='white', marker='x', s=50)
+ax.plot((2*imsize-10,2*imsize-10), (2*imsize-10,2*imsize-20), color='white', lw=2)
+ax.text(
+        2*imsize-10, 2*imsize-23, "S", color='white', fontsize=16,
+        horizontalalignment='center', verticalalignment='top')
+ax.plot((2*imsize-10,2*imsize-20), (2*imsize-10,2*imsize-10), color='white', lw=2)
+ax.text(
+        2*imsize-23, 2*imsize-10, "E", color='white', fontsize=16,
+        horizontalalignment='right', verticalalignment='center')
+ax.axis('off')
+# I think that the pixel scale is 0.3 arcsec
+x = 10
+y = 10
+x2 = x + 5/0.3
+ax.plot((x,x2), (y,y), c='white', lw=2)
+ax.text((x2+x)/2, y/1.1, "5''", color='white', fontsize=16, 
+        verticalalignment='top', horizontalalignment='center')
 
 #plt.show()
-plt.savefig("host.eps", format='eps', dpi=1000)
+plt.savefig("host.eps", format='eps', dpi=500)
 
