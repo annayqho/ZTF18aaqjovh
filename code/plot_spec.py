@@ -105,7 +105,7 @@ def get_files(sind, eind):
             dt[ii] = t-t0
             cols[ii] = 'yellow'
         elif tel == 'NOT':
-            obsdate = '2018-09-17T00:00:00' # temporary
+            obsdate = '2018-05-15T00:00:00' # temporary
             t = Time(obsdate, format='isot').mjd
             dt[ii] = t-t0
             cols[ii] = 'green'
@@ -179,4 +179,5 @@ if __name__=="__main__":
     plt.ylabel(r"Scaled $F_{\lambda}$ + const.", fontsize=16)
     ax.get_yaxis().set_ticks([])
     plt.tight_layout()
-    plt.show()
+    #plt.show()
+    plt.savefig("spec_sequence.eps", format='eps', dpi=500)

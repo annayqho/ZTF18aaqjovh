@@ -14,6 +14,12 @@ from ztfquery import marshal
 import extinction
 
 
+# time of the last non-detection
+t0 = 58233.17615 # in MJD
+# redshift
+z = 0.05403
+
+
 def download_lc():
     """ Download the light curve """
     # connect to databases
@@ -40,13 +46,13 @@ def load_danny_lc():
     f = data_dir + "/ZTF18aaqjovh.csv"
     lc = ascii.read(f)
     det = lc['mag'] < 99
-    dt = lc['mjd'][det]-lc['mjd'][det][0]
+    dt = lc['mjd'][det]-t0
     mag = lc['mag'][det]
     emag = lc['magerr'][det]
-    dt_nondet = lc['mjd'][~det]-lc['mjd'][det][0]
+    dt_nondet = lc['mjd'][~det]-t0
     lm = lc['lim_mag'][~det]
     
-    fig = plt.figure(figsize=(7, 4))
+    fig,ax = plt.subplots(figsize=(7, 4))
 
     # Plot r-band light curve
     choose = lc['filter'][det] == 'ztfr'
@@ -59,18 +65,23 @@ def load_danny_lc():
     plt.errorbar(
             dt_nondet[choose], lm[choose], fmt='v', c='k', label=None)
 
-    plt.xlabel("Days Since First ZTF Detection", fontsize=16)
+    # Show some spectral epochs with an S
+    sp = [14, 19, 20, 44, 105]
+    for s in sp:
+        ax.text(s, 18.1, "S", fontsize=12)
+
+    plt.xlabel("Days Since Last Non-Detection", fontsize=16)
     plt.ylabel("Apparent Mag (AB)", fontsize=16)
     plt.ylim(17.9,21)
-    plt.xlim(-22,32)
+    plt.xlim(-1,52)
     plt.gca().invert_yaxis()
     plt.tick_params(axis='both', labelsize=14)
-    fig.text(0.94, 0.5, "Absolute Magnitude (AB)",
-             ha='center', va='center', fontsize=16, rotation='vertical')
+    # fig.text(0.94, 0.5, "Absolute Magnitude (AB)",
+    #          ha='center', va='center', fontsize=16, rotation='vertical')
     plt.tight_layout()
-    plt.legend(loc='upper right', fontsize=14)
-    plt.show()
-    #plt.savefig('lc.eps', format='eps', dpi=1000)
+    plt.legend(loc='lower right', fontsize=14)
+    #plt.show()
+    plt.savefig('lc.eps', format='eps', dpi=1000)
 
 
 if __name__=="__main__":
