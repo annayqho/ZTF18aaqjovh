@@ -51,7 +51,6 @@ def load_danny_lc():
     emag = lc['magerr'][det]
     dt_nondet = lc['mjd'][~det]-t0
     lm = lc['lim_mag'][~det]
-    
     fig,ax = plt.subplots(figsize=(7, 4))
 
     # Plot r-band light curve
