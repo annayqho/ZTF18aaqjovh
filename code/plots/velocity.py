@@ -9,7 +9,21 @@ from astropy.io import fits as pyfits
 from astropy.table import Table
 from astropy.cosmology import Planck15
 
-DATA_DIR = "/Users/annaho/Dropbox/Projects/Research/ZTF18abukavn/data"
+DATA_DIR = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data"
+
+
+def plot_18aaqjovh():
+    """ V-band max is 3 days after t_0 """
+    dt = [4,10,34]
+    vel = [21394,18380,11229]
+    evel = [4647,5432,3306]
+    plt.errorbar(
+            dt, vel, yerr=evel, 
+            fmt='s', c='k', label="ZTF18aaqjovh", 
+            zorder=10, ms=10, lw=2)
+
+    plt.plot(dt,vel,
+        c='k', ls='-', lw=3, zorder=5)
 
 
 def plot_18gep():
@@ -282,14 +296,15 @@ def plot_population():
 if __name__=="__main__":
     fig,ax = plt.subplots(1, 1, figsize=(6,5))
 
-    plot_18gep()
-    plot_16asu()
-    grb171205a()
-    plot_1998bw()
-    plot_2006aj()
-    plot_2003lw()
-    plot_2010bh()
-    #plot_12gzk()
+    plot_18aaqjovh()
+    # plot_18gep()
+    # plot_16asu()
+    # grb171205a()
+    # plot_1998bw()
+    # plot_2006aj()
+    # plot_2003lw()
+    # plot_2010bh()
+    # plot_12gzk()
 
     # Formatting
     plt.legend(fontsize=14, loc='upper right', ncol=1)
@@ -303,5 +318,5 @@ if __name__=="__main__":
     plt.tick_params(axis='both', labelsize=16)
     plt.tight_layout()
 
-    #plt.show()
-    plt.savefig("vel.eps", format='eps', dpi=1000)
+    plt.show()
+    #plt.savefig("vel.eps", format='eps', dpi=1000)
