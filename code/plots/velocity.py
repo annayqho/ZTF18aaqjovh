@@ -11,18 +11,26 @@ from astropy.cosmology import Planck15
 
 DATA_DIR = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data"
 
+GRBSN_col = '#f6d746'
+GRBSN_lw = 3
+GRBSN_alpha = 0.5
+
+FASTSN_col = '#84206b'
+FASTSN_lw = 3
+FASTSN_alpha = 0.5
 
 def plot_18aaqjovh():
-    """ V-band max is 3 days after t_0 """
-    dt = [4,10,34]
-    vel = [21394,18380,11229]
-    evel = [4647,5432,3306]
+    """ haven't defined a t0 yet """
+    offset = 5
+    dt = np.array([4,10,34])+offset
+    vel = np.array([21394,18380,11229])
+    evel = np.array([4647,5432,3306])
     plt.errorbar(
-            dt, vel, yerr=evel, 
+            dt, vel/1E3, yerr=evel/1E3, 
             fmt='s', c='k', label="ZTF18aaqjovh", 
             zorder=10, ms=10, lw=2)
 
-    plt.plot(dt,vel,
+    plt.plot(dt,vel/1E3,
         c='k', ls='-', lw=3, zorder=5)
 
 
@@ -31,9 +39,6 @@ def plot_18gep():
     # From early spectra
     dt_early = np.array([1, 2, 4.2])
     vel_early = np.array([45000, 33000, 30000]) / 1E3
-    plt.scatter(
-            dt_early, vel_early, marker='s', facecolor='white', 
-            edgecolor='k', s=100, lw=2)
 
     # From Ragnhild
     dt = np.array([4, 9, 11.5, 16.5, 22])
@@ -41,14 +46,13 @@ def plot_18gep():
     evel = np.array([1000, 4000, 2000, 1000, 2000])/1E3
     el = np.array(['O', 'Fe', 'Fe', 'Fe', 'Fe'])
 
-    plt.errorbar(
-            dt[el=='Fe'], vel[el=='Fe'], yerr=evel[el=='Fe'], 
-            fmt='s', c='k', label="SN2018gep", 
-            zorder=10, ms=10, lw=2)
-
     plt.plot(
         np.hstack((dt_early, dt)), np.hstack((vel_early, vel)), 
-        c='k', ls='-', lw=3, zorder=5)
+        c=FASTSN_col, lw=FASTSN_lw, alpha=FASTSN_alpha, zorder=5,
+        label="Fast Ic-BL")
+    plt.text(dt_early[1]*1.1, vel_early[1], '18gep',
+            horizontalalignment='left', fontsize=12,
+            verticalalignment='bottom')
 
 
 def plot_16asu():
@@ -65,9 +69,8 @@ def plot_16asu():
             [28.3, 29.5, 25.7, 21.6, 22.0])*1000/1E3
     evel = np.array(
             [1.3, 1.4, 0.3, 0.4, 1.3])*1000/1E3
-    plt.errorbar(
-            dt, vel, xerr=0.17, yerr=evel, ms=10,
-            marker='o', c='#84206b', fmt='-', lw=3, zorder=10)
+    plt.plot(
+            dt, vel, c=FASTSN_col, lw=FASTSN_lw, zorder=10, alpha=FASTSN_alpha)
     plt.text(dt[1]*1.1, vel[1], 'iPTF16asu',
             horizontalalignment='left', fontsize=12,
             verticalalignment='bottom')
@@ -87,7 +90,7 @@ def plot_1998bw():
     offset = 2450945.7-2450929.41
     dt = phase+offset
     #plt.errorbar(dt, vel/1E3, yerr=evel/1E3, marker='v', c='#f6d746')
-    plt.plot(dt, vel/1E3, c='#f6d746', lw=3, alpha=0.5)
+    plt.plot(dt, vel/1E3, c=GRBSN_col, lw=GRBSN_lw, alpha=GRBSN_alpha)
     plt.text(
             dt[8], vel[8]/1E3, 'SN1998bw', fontsize=12,
             verticalalignment='bottom', horizontalalignment='left')
@@ -186,8 +189,8 @@ def plot_12gzk():
     # for the dt, use the fact that Ic usually reach V-band max in 12-20 days
     # to add a sort of uncertainty to the dt, so offset would be 16 +/- 4 days
     dt = phase+16
-    plt.errorbar(
-            dt, vel/1E3, yerr=evel/1E3, fmt='.', ls='--', c='#f6d746')
+    plt.plot(
+            dt, vel/1E3, c='grey', lw=3)
     plt.text(dt[1], vel[1]/1E3, 'PTF12gzk',
             horizontalalignment='right', fontsize=12,
             verticalalignment='bottom')
@@ -294,17 +297,17 @@ def plot_population():
 
 
 if __name__=="__main__":
-    fig,ax = plt.subplots(1, 1, figsize=(6,5))
+    fig,ax = plt.subplots(1, 1, figsize=(8,5))
 
     plot_18aaqjovh()
-    # plot_18gep()
-    # plot_16asu()
-    # grb171205a()
-    # plot_1998bw()
-    # plot_2006aj()
-    # plot_2003lw()
-    # plot_2010bh()
-    # plot_12gzk()
+    plot_18gep()
+    plot_16asu()
+    grb171205a()
+    plot_1998bw()
+    plot_2006aj()
+    plot_2003lw()
+    plot_2010bh()
+    plot_12gzk()
 
     # Formatting
     plt.legend(fontsize=14, loc='upper right', ncol=1)
@@ -313,10 +316,10 @@ if __name__=="__main__":
             r"Fe II Velocity ($10^3$ km/s)", fontsize=16)
     plt.yscale('log')
     #plt.xscale('log')
-    plt.xlim(0, 25)
-    plt.ylim(10, 100)
+    plt.xlim(0, 40)
+    plt.ylim(8, 100)
     plt.tick_params(axis='both', labelsize=16)
     plt.tight_layout()
 
-    plt.show()
-    #plt.savefig("vel.eps", format='eps', dpi=1000)
+    #plt.show()
+    plt.savefig("vel.eps", format='eps', dpi=1000)
