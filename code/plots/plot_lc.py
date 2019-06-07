@@ -9,6 +9,7 @@ from matplotlib import rc
 rc("font", family="serif")
 rc("text", usetex=True)
 from astropy.io import ascii
+from astropy.cosmology import Planck15
 from ztfquery import query
 from ztfquery import marshal
 import extinction
@@ -69,16 +70,26 @@ def load_danny_lc():
     for s in sp:
         ax.text(s, 18.1, "S", fontsize=12)
 
-    plt.xlabel("Days Since Last Non-Detection", fontsize=16)
-    plt.ylabel("Apparent Mag (AB)", fontsize=16)
-    plt.ylim(17.9,21)
-    plt.xlim(-1,52)
-    plt.gca().invert_yaxis()
-    plt.tick_params(axis='both', labelsize=14)
-    # fig.text(0.94, 0.5, "Absolute Magnitude (AB)",
-    #          ha='center', va='center', fontsize=16, rotation='vertical')
-    plt.tight_layout()
+    ax.set_xlabel("Days Since Last Non-Detection", fontsize=16)
+    ax.set_ylabel("Apparent Mag (AB)", fontsize=16)
+    ax.set_ylim(17.9,21)
+    ax.set_xlim(-1,52)
+    ax.tick_params(axis='both', labelsize=14)
+    ax.invert_yaxis()
+    #ax2.invert_yaxis()
+
+    # Put a twin axis with the absolute magnitude
+    ax2 = ax.twinx()
+    y_f = lambda y_i: y_i-Planck15.distmod(z=z).value
+    ymin, ymax = ax.get_ylim()
+    ax2.set_ylim((y_f(ymin), y_f(ymax)))
+    ax2.plot([],[])
+    ax2.tick_params(axis='both', labelsize=14)
+    ax2.set_ylabel("Absolute Mag (AB)", fontsize=16, rotation=270)
+    ax2.set_xlim(-1,52)
+
     plt.legend(loc='lower right', fontsize=14)
+    fig.tight_layout()
     #plt.show()
     plt.savefig('lc.eps', format='eps', dpi=1000)
 
