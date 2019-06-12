@@ -18,7 +18,7 @@ from normalize import smooth_spec
 from measure_snr import get_snr
 
 
-z = 0.03154
+z = 0.05403
 SPEC_DIR = "Data/marshal/spectra/ZTF18aaqjovh"
 
 
@@ -174,11 +174,11 @@ def plot_spec(ax, x, y, tel, epoch):
 
 
 def get_98bw(ind):
-    """ Epochs are -2, +13, +29, +73 """
+    """ Epochs are -2, +3, +29, +73 """
     ddir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data/spectra"
     inputf = glob.glob(ddir + "/*.txt")
     dat = ascii.read(inputf[ind])
-    wl = dat['wavelength']
+    wl = dat['wavelength'] / (1+0.0085)
     flux = dat['flux']
     return wl, flux    
 
@@ -187,8 +187,8 @@ if __name__=="__main__":
     fig,ax = plt.subplots(figsize=(6,10))
     files, epochs, tels = get_files(0, 6)
     nfiles = len(files)
-    shift = [0, 1, 1.5, 2.5, 3.5, 5, 6, 7, 8]
-    98bw_shift = [0, 0, 0, 0]
+    shift = [0, 1, 1.5, 2, 3, 4]
+    bw_shift = [2.1, 3, 4, 6, 7.1]
     for ii,f in enumerate(files):
         tel = tels[ii]
         dt = epochs[ii]
@@ -200,17 +200,26 @@ if __name__=="__main__":
         plot_smoothed_spec(
                 ax, wl[choose], (shifted-shift[ii])[choose], 
                 ivar[choose], tel, dt)
-    wcomp,fcomp = get_98bw(0)
-    scale = fcomp[wcomp>4100][0]
-    shifted = fcomp/scale-98bw_shift[ii]
-    ax.plot(wcomp,shifted,c='r')
+    for ii in np.arange(5):
+        wcomp,fcomp = get_98bw(ii)
+        scale = fcomp[wcomp>4100][ii]
+        shifted = fcomp/scale-bw_shift[ii]
+        if ii == 0:
+            ax.plot(
+                    wcomp,shifted,c='r',lw=1,alpha=0.5,
+                    label="98bw at similar phase")
+        else:
+            ax.plot(
+                    wcomp,shifted,c='r',lw=1,alpha=0.5,
+                    label='_nolegend_')
 
     plt.tick_params(axis='both', labelsize=14)
     plt.xlim(3660, 10140)
-    plt.ylim(-10, 0)
-    plt.xlabel(r"Observed Wavelength (\AA)", fontsize=16)
+    plt.ylim(-8, -0.5)
+    plt.xlabel(r"Rest Wavelength (\AA)", fontsize=16)
     plt.ylabel(r"Scaled $F_{\lambda}$ + const.", fontsize=16)
+    plt.legend(fontsize=14)
     ax.get_yaxis().set_ticks([])
     plt.tight_layout()
-    plt.show()
-    #plt.savefig("spec_sequence.eps", format='eps', dpi=500)
+    #plt.show()
+    plt.savefig("spec_sequence.eps", format='eps', dpi=500)
