@@ -76,8 +76,8 @@ def get_files(sind, eind):
     tels = []
     cols = np.array([""]*len(dt), dtype='U10')
 
-    # Read in all of the files, pull out the corresponding dates, and sort by date
-    t0 = 58233.17615 # in MJD
+    # Read in files, pull out the corresponding dates, and sort by date
+    t0 = 58233.17615 # time of last non-detection in MJD
     for ii,f in enumerate(files):
         tel = f.split("_")[2]
         tels.append(tel)
@@ -134,7 +134,9 @@ def get_files(sind, eind):
 
 def load_spec(f):
     lc = np.loadtxt(f)
-    wl = lc[:,0]
+    obs_wl = lc[:,0]
+    # shift to rest wl
+    wl = obs_wl / (1+z)
     f = lc[:,1]
     if tel == 'Keck':
         eflux = lc[:,3]
@@ -171,11 +173,22 @@ def plot_spec(ax, x, y, tel, epoch):
     return ax
 
 
+def get_98bw(ind):
+    """ Epochs are -2, +13, +29, +73 """
+    ddir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data/spectra"
+    inputf = glob.glob(ddir + "/*.txt")
+    dat = ascii.read(inputf[ind])
+    wl = dat['wavelength']
+    flux = dat['flux']
+    return wl, flux    
+
+
 if __name__=="__main__":
-    fig,ax = plt.subplots()
+    fig,ax = plt.subplots(figsize=(6,10))
     files, epochs, tels = get_files(0, 6)
     nfiles = len(files)
     shift = [0, 1, 1.5, 2.5, 3.5, 5, 6, 7, 8]
+    98bw_shift = [0, 0, 0, 0]
     for ii,f in enumerate(files):
         tel = tels[ii]
         dt = epochs[ii]
@@ -187,6 +200,10 @@ if __name__=="__main__":
         plot_smoothed_spec(
                 ax, wl[choose], (shifted-shift[ii])[choose], 
                 ivar[choose], tel, dt)
+    wcomp,fcomp = get_98bw(0)
+    scale = fcomp[wcomp>4100][0]
+    shifted = fcomp/scale-98bw_shift[ii]
+    ax.plot(wcomp,shifted,c='r')
 
     plt.tick_params(axis='both', labelsize=14)
     plt.xlim(3660, 10140)
@@ -195,5 +212,5 @@ if __name__=="__main__":
     plt.ylabel(r"Scaled $F_{\lambda}$ + const.", fontsize=16)
     ax.get_yaxis().set_ticks([])
     plt.tight_layout()
-    #plt.show()
-    plt.savefig("spec_sequence.eps", format='eps', dpi=500)
+    plt.show()
+    #plt.savefig("spec_sequence.eps", format='eps', dpi=500)
