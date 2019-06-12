@@ -3,6 +3,7 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 from matplotlib import rc
 rc("font", family="serif")
 rc("text", usetex=True)
@@ -12,6 +13,9 @@ from ztfquery import marshal
 import extinction
 import glob
 from astropy.time import Time
+sys.path.append("/Users/annaho/Github/Spectra")
+from normalize import smooth_spec
+from measure_snr import get_snr
 
 
 z = 0.03154
@@ -132,29 +136,39 @@ def load_spec(f):
     lc = np.loadtxt(f)
     wl = lc[:,0]
     f = lc[:,1]
-    return wl, f
+    if tel == 'Keck':
+        eflux = lc[:,3]
+    else:
+        # estimate uncertainty from scatter in a continuum region
+        eflux = np.array([get_snr(wl, f, 6300, 6500)]*len(wl))
+    ivar = 1/eflux**2
+    return wl, f, ivar
 
 
 def plot_smoothed_spec(ax, x, y, ivar, tel, epoch, ls='-', lw=0.5, c='black', label=None, text=True):
     """ plot the smoothed spectrum """
     res = get_res(tel)
-    temp = get_temp(epoch)
-    choose_x = np.logical_and(x >= 3200, x<= 9300)
-    choose = choose_x 
     smoothed = smooth_spec(x, y, ivar, res*3)
     ax.plot(
-            x[choose], smoothed[choose], c=c,
+            x, smoothed, c=c,
             drawstyle='steps-mid', lw=lw, ls=ls, alpha=1.0, label=label,
             zorder=10)
-    dt_str = r"+%s\,d ($T=%s\,$kK)" %(
-            str(np.round(epoch, 1)), (int(round_sig(temp/1000))))
+    dt_str = r"+%s\,d" %(
+            str(np.round(epoch, 1)))
     if text:
         ax.text(
-                x[choose][-1]+100, smoothed[choose][-1],  s=dt_str,
+                x[-1]+100, smoothed[-1],  s=dt_str,
                 horizontalalignment='left', verticalalignment='center',
                 fontsize=12)
     return smoothed
 
+
+def plot_spec(ax, x, y, tel, epoch):
+    """ plot the spectrum """
+    ax.plot(
+            x, y, c='lightgrey',
+            drawstyle='steps-mid', lw=0.5, alpha=0.4)
+    return ax
 
 
 if __name__=="__main__":
@@ -165,15 +179,17 @@ if __name__=="__main__":
     for ii,f in enumerate(files):
         tel = tels[ii]
         dt = epochs[ii]
-        wl, flux = load_spec(f)
+        wl, flux, ivar = load_spec(f)
+        choose = np.logical_and(wl>3660, wl < 9000)
         scale = flux[wl>4100][0]
         shifted = flux/scale-shift[ii]
-        plt.plot(
-            wl, shifted-shift[ii], c='lightgrey', 
-            drawstyle='steps-mid', lw=0.4, alpha=1.0)
+        plot_spec(ax, wl[choose], (shifted-shift[ii])[choose], tel, dt)
+        plot_smoothed_spec(
+                ax, wl[choose], (shifted-shift[ii])[choose], 
+                ivar[choose], tel, dt)
 
     plt.tick_params(axis='both', labelsize=14)
-    plt.xlim(3600, 9500)
+    plt.xlim(3660, 10140)
     plt.ylim(-10, 0)
     plt.xlabel(r"Observed Wavelength (\AA)", fontsize=16)
     plt.ylabel(r"Scaled $F_{\lambda}$ + const.", fontsize=16)

@@ -9,6 +9,10 @@ from astropy.io import fits as pyfits
 from astropy.table import Table
 from astropy.cosmology import Planck15
 
+# time of the last non-detection
+t0 = 58233.17615 # in MJD
+
+
 DATA_DIR = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data"
 
 GRBSN_col = '#f6d746'
@@ -21,7 +25,7 @@ FASTSN_alpha = 0.5
 
 def plot_18aaqjovh():
     """ haven't defined a t0 yet """
-    offset = 5
+    offset = 10 # days between t_0 and the first day
     dt = np.array([4,10,34])+offset
     vel = np.array([21394,18380,11229])
     evel = np.array([4647,5432,3306])
@@ -316,8 +320,8 @@ if __name__=="__main__":
             r"Fe II Velocity ($10^3$ km/s)", fontsize=16)
     plt.yscale('log')
     #plt.xscale('log')
-    plt.xlim(0, 40)
-    plt.ylim(8, 100)
+    plt.xlim(0, 31)
+    plt.ylim(10, 100)
     plt.tick_params(axis='both', labelsize=16)
     plt.tight_layout()
 
