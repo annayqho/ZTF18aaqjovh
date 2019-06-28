@@ -74,5 +74,6 @@ ax.text((x2+x)/2, y/1.1, "5''", color='white', fontsize=16,
         verticalalignment='top', horizontalalignment='center')
 
 #plt.show()
-plt.savefig("host.eps", format='eps', dpi=500)
+plt.savefig(
+"host.eps", format='eps', dpi=500, bbox_inches = 'tight', pad_inches = 0)
 
