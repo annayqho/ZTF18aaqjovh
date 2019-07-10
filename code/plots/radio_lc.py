@@ -242,51 +242,50 @@ def plot_12ap(ax, background=False):
         ax.text(0.1, 0.1, "SN2012ap", fontsize=12, transform=ax.transAxes)
 
 
+if __name__=="__main__":
+    fig,axarr = plt.subplots(
+            3, 2, figsize=(6,6), sharex=True, sharey=True)
 
-fig,axarr = plt.subplots(
-        3, 2, figsize=(6,6), sharex=True, sharey=True)
+    for ii,ax in enumerate(axarr.reshape(-1)):
+        # LC of ZTF18aaqjovh
+        plot_source(ax)
+        plot_98bw(ax, background=True)
+        plot_09bb(ax, background=True)
+        plot_0316d(ax, background=True)
+        plot_12ap(ax, background=True)
+        plot_06aj(ax, background=True)
+        plot_17cw(ax, background=True)
+        ax.yaxis.set_tick_params(labelsize=14)
+        ax.xaxis.set_tick_params(labelsize=14)
+        ax.set_yscale('log')
+        ax.set_xlim(0, 40)
+        ax.set_ylim(1E26, 1E29)
 
-for ii,ax in enumerate(axarr.reshape(-1)):
-    # LC of ZTF18aaqjovh
-    plot_source(ax)
-    plot_98bw(ax, background=True)
-    plot_09bb(ax, background=True)
-    plot_0316d(ax, background=True)
-    plot_12ap(ax, background=True)
-    plot_06aj(ax, background=True)
-    plot_17cw(ax, background=True)
-    ax.yaxis.set_tick_params(labelsize=14)
-    ax.xaxis.set_tick_params(labelsize=14)
-    ax.set_yscale('log')
-    ax.set_xlim(0, 40)
-    ax.set_ylim(1E26, 1E29)
+    plot_98bw(axarr[0,0])
+    plot_09bb(axarr[0,1])
+    plot_0316d(axarr[1,0])
+    plot_12ap(axarr[1,1])
+    plot_06aj(axarr[2,0])
+    plot_17cw(axarr[2,1])
 
-plot_98bw(axarr[0,0])
-plot_09bb(axarr[0,1])
-plot_0316d(axarr[1,0])
-plot_12ap(axarr[1,1])
-plot_06aj(axarr[2,0])
-plot_17cw(axarr[2,1])
+    fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=16) 
+    fig.text(
+            0.04, 0.5, r'Radio Luminosity ($10^{27}$ erg/s)', 
+            fontsize=16, rotation='vertical', horizontalalignment='center',
+            verticalalignment='center')
 
+    fig.subplots_adjust(wspace=0.1, hspace=0.1)
+    #plt.tight_layout()
 
-fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=16) 
-fig.text(
-        0.04, 0.5, r'Radio Luminosity ($10^{27}$ erg/s)', 
-        fontsize=16, rotation='vertical', horizontalalignment='center',
-        verticalalignment='center')
+    # Legend
+    ax = axarr[0,1]
+    ax.plot([1,2],[3,4],c=purp,label="2-4 GHz", lw=2)
+    ax.plot([1,2],[3,4],c=dark,label="4-8 GHz", lw=2)
+    ax.plot([1,2],[3,4],c=yell,label="8-12 GHz", lw=2)
+    ax.plot([1,2],[3,4],c=orag,label="12-18 GHz", lw=2)
+    ax.legend(loc='upper center', bbox_to_anchor=(0, 1.3), ncol=2)
 
-fig.subplots_adjust(wspace=0.1, hspace=0.1)
-#plt.tight_layout()
-
-# Legend
-ax = axarr[0,1]
-ax.plot([1,2],[3,4],c=purp,label="2-4 GHz", lw=2)
-ax.plot([1,2],[3,4],c=dark,label="4-8 GHz", lw=2)
-ax.plot([1,2],[3,4],c=yell,label="8-12 GHz", lw=2)
-ax.plot([1,2],[3,4],c=orag,label="12-18 GHz", lw=2)
-ax.legend(loc='upper center', bbox_to_anchor=(0, 1.3), ncol=2)
-
-#plt.show()
-plt.savefig(
-    "radio_lc.eps", format='eps', dpi=500, bbox_inches='tight',
-    pad_inches=0.1)
+    #plt.show()
+    plt.savefig(
+        "radio_lc.eps", format='eps', dpi=500, bbox_inches='tight',
+        pad_inches=0.1)
