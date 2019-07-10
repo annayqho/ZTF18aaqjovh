@@ -56,13 +56,19 @@ def plot_ztf_det(ax):
     ax.plot(
             [16, 22, 34], 
             ujy_to_flux(np.array([32.5, 29.6, 26.6]), 0.05403),
-            c=dark, lw=lw, label="_nolegend_")
+            c=dark, lw=2, label="_nolegend_")
     ax.errorbar(
         [16, 22, 34],
         ujy_to_flux(np.array([32.5, 29.6, 26.6]), 0.05403),
         yerr=ujy_to_flux(np.array([7.1, 5.3, 5.4]), 0.05403),
         c=dark, fmt='o')
 
+
+def plot_iptf_det(ax):
+    # iPTF14dby
+    dt = [20.42, 44.18, 65.44, 75.41, 106.30, 154.16]
+    lum = [4.3E28, 6.8E28, 5.1E28, 5.2E28, 5.4E28, 4.7E28]
+    ax.plot(dt, lum, c=dark, lw=2, ls='--', label="_nolegend_")
 
 
 fig,ax = plt.subplots(1,1,figsize=(8,6))
@@ -78,11 +84,13 @@ plot_98bw(ax)
 plot_06aj(ax)
 plot_ztf_lims(ax)
 plot_ptf_lims(ax)
+plot_ztf_det(ax)
+plot_iptf_det(ax)
 
 ax.set_yscale('log')
 ax.set_xscale('log')
 ax.tick_params(axis='both', labelsize=16)
 ax.set_xlabel(r"Time Since GRB/Discovery (days)", fontsize=16)
-ax.set_ylabel(r'4.9 GHz Radio Luminosity (erg/s/Hz)', fontsize=16)
+ax.set_ylabel(r'4--6 GHz Radio Luminosity (erg/s/Hz)', fontsize=16)
 
 plt.show()
