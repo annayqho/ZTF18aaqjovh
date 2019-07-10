@@ -35,8 +35,34 @@ def plot_06aj(ax):
     t = dat['dt'][choose]
     lum = ujy_to_flux(dat['flux'][choose], z)
     toplot = dat['fluxerr'][choose] > 0
-    print(lum[toplot])
-    ax.plot(t[toplot], lum[toplot], c=col, label="_nolegend_")
+    ax.plot(t[toplot], lum[toplot], c=col, label="_nolegend_", lw=2)
+
+
+def plot_ztf_lims(ax):
+    dt = [5, 19, 46, 100.4, 68.2, 37.95]
+    lums = [7.599669433717404E26, 8.327790693956049E26, 
+        3.0907667047489497E26, 1.237984570092877E27,
+        2.3488805252832247E27, 3.711388552298804E27]
+    ax.scatter(dt, lums, marker='v', c='k')
+
+
+def plot_ptf_lims(ax):
+    dat = np.loadtxt("../../data/ptf_lims.txt", delimiter=',')
+    ax.scatter(dat[:,0], dat[:,1], marker='v', 
+            facecolor='white', edgecolor='k')
+
+
+def plot_ztf_det(ax):
+    ax.plot(
+            [16, 22, 34], 
+            ujy_to_flux(np.array([32.5, 29.6, 26.6]), 0.05403),
+            c=dark, lw=lw, label="_nolegend_")
+    ax.errorbar(
+        [16, 22, 34],
+        ujy_to_flux(np.array([32.5, 29.6, 26.6]), 0.05403),
+        yerr=ujy_to_flux(np.array([7.1, 5.3, 5.4]), 0.05403),
+        c=dark, fmt='o')
+
 
 
 fig,ax = plt.subplots(1,1,figsize=(8,6))
@@ -48,9 +74,15 @@ yell = '#f6d746'
 
 ddir = "/Users/annaho/Dropbox/Projects/Research/IcBL/data/radio_compilations"
 
+plot_98bw(ax)
+plot_06aj(ax)
+plot_ztf_lims(ax)
+plot_ptf_lims(ax)
+
 ax.set_yscale('log')
+ax.set_xscale('log')
 ax.tick_params(axis='both', labelsize=16)
-ax.set_xlabel(r"$\Delta t$ (days)", fontsize=16)
-ax.set_ylabel(r'4.9 GHz Radio Luminosity ($10^{27}$ erg/s)', fontsize=16)
+ax.set_xlabel(r"Time Since GRB/Discovery (days)", fontsize=16)
+ax.set_ylabel(r'4.9 GHz Radio Luminosity (erg/s/Hz)', fontsize=16)
 
 plt.show()
