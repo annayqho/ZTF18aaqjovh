@@ -38,6 +38,27 @@ def plot_06aj(ax):
     ax.plot(t[toplot], lum[toplot], c=col, label="_nolegend_", lw=2)
 
 
+def plot_09bb(ax):
+    z = 0.009937
+    dat = np.loadtxt(ddir + "/2009bb_49ghz.txt", delimiter=',')
+    col = orag
+    lum = ujy_to_flux(dat[:,1]*1000, z)
+    ax.plot(dat[:,0], lum, c=col, label="_nolegend_", lw=2)
+
+
+def plot_100316D(ax):
+    z = 0.0593
+    dat = Table.read(ddir + "/100316D_obs.dat", format='ascii.csv')
+
+    col = orag
+    freq = dat['freq']
+    choose = freq== 5.4
+    t = dat['dt'][choose]
+    lum = ujy_to_flux(dat['flux'][choose], z)
+    toplot = dat['fluxerr'][choose] > 0
+    ax.plot(t[toplot], lum[toplot], c=col, label="_nolegend_")
+
+
 def plot_ztf_lims(ax):
     dt = [5, 19, 46, 100.4, 68.2, 37.95]
     lums = [7.599669433717404E26, 8.327790693956049E26, 
@@ -66,12 +87,20 @@ def plot_ztf_det(ax):
 
 def plot_iptf_det(ax):
     # iPTF14dby
-    dt = [20.42, 44.18, 65.44, 75.41, 106.30, 154.16]
-    lum = [4.3E28, 6.8E28, 5.1E28, 5.2E28, 5.4E28, 4.7E28]
-    ax.plot(dt, lum, c=dark, lw=2, ls='--', label="_nolegend_")
+    dat = np.loadtxt("../../data/ptfdby.txt", delimiter=',')
+    ax.plot(dat[:,0], dat[:,1], c=dark, lw=0.5, ls='--', label="_nolegend_")
+
+    # iPTF11qcj
+    dat = np.loadtxt("../../data/ptf11qcj.txt", delimiter=',')
+    ax.plot(dat[:,0], dat[:,1], c=dark, lw=0.5, ls='--', label="_nolegend_")
+
+    # 11cmh
+    ax.plot(
+            [171,991], [4E28, 4.5E27], lw=0.5, 
+            c=dark, ls='--', label="_nolegend_")
 
 
-fig,ax = plt.subplots(1,1,figsize=(8,6))
+fig,ax = plt.subplots(1,1,figsize=(6,5))
 
 dark = '#140b34'
 purp = '#84206b'
@@ -86,11 +115,15 @@ plot_ztf_lims(ax)
 plot_ptf_lims(ax)
 plot_ztf_det(ax)
 plot_iptf_det(ax)
+plot_100316D(ax)
 
 ax.set_yscale('log')
 ax.set_xscale('log')
 ax.tick_params(axis='both', labelsize=16)
+ax.set_xlim(2,160)
 ax.set_xlabel(r"Time Since GRB/Discovery (days)", fontsize=16)
 ax.set_ylabel(r'4--6 GHz Radio Luminosity (erg/s/Hz)', fontsize=16)
+plt.tight_layout()
 
 plt.show()
+#plt.savefig("frac_det.eps", format='eps', dpi=500)
