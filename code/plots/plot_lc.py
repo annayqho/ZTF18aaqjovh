@@ -90,10 +90,10 @@ def load_danny_lc(ax):
 
 
 if __name__=="__main__":
-    fig,ax = plt.subplots(figsize=(7, 6))
+    fig,ax = plt.subplots(1,1,figsize=(7, 6))
 
-    load_danny_lc(ax)
-    plot_98bw(ax)
+    #load_danny_lc(ax)
+    #plot_98bw(ax)
 
     ax.set_xlabel("Days Since Last Non-Detection", fontsize=16)
     ax.set_ylabel("Apparent Mag (AB)", fontsize=16)
@@ -110,7 +110,8 @@ if __name__=="__main__":
     ax2.set_ylim((y_f(ymin), y_f(ymax)))
     ax2.plot([],[])
     ax2.tick_params(axis='both', labelsize=14)
-    ax2.set_ylabel("Absolute Mag (AB)", fontsize=16, rotation=270)
+    ax2.set_ylabel(
+            "Absolute Mag (AB)", fontsize=16, rotation=270, va='bottom')
     ax2.set_xlim(-1,52)
 
     ax.legend(loc='lower right', fontsize=14)
