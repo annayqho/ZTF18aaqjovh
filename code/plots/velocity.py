@@ -16,7 +16,7 @@ t0 = 58233.17615 # in MJD
 
 DATA_DIR = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data"
 
-GRBSN_col = '#f6d746'
+GRBSN_col = '#e55c30'
 GRBSN_lw = 3
 GRBSN_alpha = 0.5
 
@@ -81,11 +81,16 @@ def plot_16asu():
             verticalalignment='bottom')
 
 
-def plot_1998bw():
+def plot_1998bw(ax, background=False):
     """ Modjaz et al. 2016
     offset from Galama 1998 """
     dat = np.loadtxt(DATA_DIR + "/modjaz_vel.txt", dtype=str, delimiter=';')
     names = np.array([val.strip() for val in dat[:,0]])
+
+    col = 'lightgrey'
+    if background is False:
+        col = GRBSN_col
+        ax.text(0.1, 0.1, "SN1998bw", fontsize=12, transform=ax.transAxes)
 
     name = 'sn1998bw'
     choose = names==name
@@ -94,19 +99,19 @@ def plot_1998bw():
     evel = dat[:,3][choose].astype(float)
     offset = 2450945.7-2450929.41
     dt = phase+offset
-    #plt.errorbar(dt, vel/1E3, yerr=evel/1E3, marker='v', c='#f6d746')
-    plt.plot(dt, vel/1E3, c=GRBSN_col, lw=GRBSN_lw, alpha=GRBSN_alpha)
-    plt.text(
-            dt[8], vel[8]/1E3, 'SN1998bw', fontsize=12,
-            verticalalignment='bottom', horizontalalignment='left')
+    ax.plot(dt, vel/1E3, c=col, lw=GRBSN_lw, alpha=GRBSN_alpha)
 
 
-def plot_2006aj():
+def plot_2006aj(ax, background=False):
     """ Modjaz et al. 2016
     offset from Campana 2006 """
     dat = np.loadtxt(DATA_DIR + "/modjaz_vel.txt", dtype=str, delimiter=';')
     names = np.array([val.strip() for val in dat[:,0]])
 
+    col = 'lightgrey'
+    if background is False:
+        col = GRBSN_col
+        ax.text(0.1, 0.1, "SN2006aj", fontsize=12, transform=ax.transAxes)
     name = 'sn2006aj'
     choose = names==name
     phase = dat[:,1][choose].astype(float)
@@ -114,19 +119,20 @@ def plot_2006aj():
     evel = dat[:,3][choose].astype(float)
     offset = 2453794.7-2453784.649
     dt = phase+offset
-    plt.plot(
-            dt, vel/1E3, c='#f6d746', lw=3, alpha=0.5)
-    plt.text(
-            dt[0], vel[0]/1E3/1.05, 'SN2006aj', fontsize=12,
-            verticalalignment='top', horizontalalignment='center')
+    ax.plot(
+            dt, vel/1E3, c=col, lw=3, alpha=0.5)
 
 
-def plot_2010bh():
+def plot_2010bh(ax, background):
     """ Modjaz et al. 2016
     offset from Bufano 2012 """
     dat = np.loadtxt(DATA_DIR + "/modjaz_vel.txt", dtype=str, delimiter=';')
     names = np.array([val.strip() for val in dat[:,0]])
 
+    col = 'lightgrey'
+    if background is False:
+        col = GRBSN_col
+        ax.text(0.1, 0.1, "SN2010bh", fontsize=12, transform=ax.transAxes)
     name = 'sn2010bh'
     choose = names==name
     phase = dat[:,1][choose].astype(float)
@@ -134,13 +140,27 @@ def plot_2010bh():
     evel = dat[:,3][choose].astype(float)
     offset = 8 
     dt = phase+offset
-    #plt.errorbar(
-    #        dt, vel/1E3, yerr=evel/1E3, marker='D', c='#f6d746', alpha=0.3)
-    plt.errorbar(
-            dt, vel/1E3, c='#f6d746', alpha=0.5, lw=3)
-    plt.text(
-            dt[3], vel[3]/1E3, 'SN2010bh', fontsize=12,
-            verticalalignment='bottom', horizontalalignment='left')
+    ax.errorbar(
+            dt, vel/1E3, c=col, alpha=0.5, lw=3)
+
+
+def plot_2009bb(ax, background):
+    dat = np.loadtxt(DATA_DIR + "/modjaz_vel.txt", dtype=str, delimiter=';')
+    names = np.array([val.strip() for val in dat[:,0]])
+    col = 'lightgrey'
+    if background is False:
+        col = GRBSN_col
+        ax.text(0.1, 0.1, "SN2009bb", fontsize=12, transform=ax.transAxes)
+    name = 'sn2009bb'
+    # explosion epoch: March 19
+    # maximum light: Apr 1 (Soderberg 2009)
+    choose = names == name
+    phase = dat[:,1][choose].astype(float)
+    vel = dat[:,2][choose].astype(float)*-1
+    evel = dat[:,3][choose].astype(float)
+    offset = 13
+    dt = phase+offset
+    ax.errorbar(dt, vel/1E3, c=col, alpha=0.5, lw=3)
 
 
 def plot_2003lw():
@@ -211,19 +231,6 @@ def plot_population():
     phase = dat['Phase']
     vel = -1*dat['vabs']/1E3
 
-    # Rel SN, no GRB
-    name = 'sn2009bb'
-    # explosion epoch: March 19
-    # maximum light: Apr 1 (Soderberg 2009)
-    offset = 13
-    choose = names == name
-    dt = phase[choose]+offset
-    v = vel[choose]
-    plt.plot(dt, v, c='grey')
-    plt.scatter(dt, v, c='grey')
-    plt.text(dt[2], v[2]/1.02, 'SN2009bb',
-            horizontalalignment='right', fontsize=12,
-            verticalalignment='top', zorder=5)
 
     name = 'sn2012ap'
     # explosion date: 2012 Feb 5
@@ -307,6 +314,16 @@ if __name__=="__main__":
 
     for ii,ax in enumerate(axarr.reshape(-1)):
         plot_18aaqjovh(ax)
+        plot_1998bw(ax, background=True)
+        plot_2006aj(ax, background=True)
+        plot_2010bh(ax, background=True)
+        plot_2009bb(ax, background=True)
+        # plot_18gep()
+        # plot_16asu()
+        # grb171205a()
+        # plot_2003lw()
+        # plot_12gzk()
+
         ax.yaxis.set_tick_params(labelsize=14)
         ax.xaxis.set_tick_params(labelsize=14)
         ax.set_yscale('log')
@@ -314,15 +331,10 @@ if __name__=="__main__":
         ax.set_xlim(0, 33)
         ax.set_ylim(10, 100)
 
-    # plot_18gep()
-    # plot_16asu()
-    # grb171205a()
-    # plot_1998bw()
-    # plot_2006aj()
-    # plot_2003lw()
-    # plot_2010bh()
-    # plot_12gzk()
-
+    plot_1998bw(axarr[0,0], background=False)
+    plot_2010bh(axarr[1,0], background=False)
+    plot_2006aj(axarr[2,0], background=False)
+    plot_2009bb(axarr[0,1], background=False)
     fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=16)
     fig.text(
             0.04, 0.5, r'Fe II Velocity ($10^3$ km/s)',
