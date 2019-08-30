@@ -85,7 +85,7 @@ def density_curves(ax, x, ne):
 
 def lumtnu(ax):
     # 11qcj
-    tnu = (10)*(5/5)
+    tnu = (100)*(5/5)
     lpeak = 7E28
     ax.scatter(
             tnu, lpeak, marker='+', c='k', s=100,

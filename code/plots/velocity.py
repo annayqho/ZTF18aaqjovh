@@ -17,8 +17,8 @@ t0 = 58233.17615 # in MJD
 DATA_DIR = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data"
 
 GRBSN_col = '#e55c30'
-GRBSN_lw = 3
-GRBSN_alpha = 0.5
+GRBSN_lw = 2
+GRBSN_alpha = 1.0
 
 FASTSN_col = '#84206b'
 FASTSN_lw = 3
@@ -120,7 +120,7 @@ def plot_2006aj(ax, background=False):
     offset = 2453794.7-2453784.649
     dt = phase+offset
     ax.plot(
-            dt, vel/1E3, c=col, lw=3, alpha=0.5)
+            dt, vel/1E3, c=col, lw=GRBSN_lw, alpha=GRBSN_alpha)
 
 
 def plot_2010bh(ax, background):
@@ -140,8 +140,8 @@ def plot_2010bh(ax, background):
     evel = dat[:,3][choose].astype(float)
     offset = 8 
     dt = phase+offset
-    ax.errorbar(
-            dt, vel/1E3, c=col, alpha=0.5, lw=3)
+    ax.plot(
+            dt, vel/1E3, c=col, lw=GRBSN_lw, alpha=GRBSN_alpha)
 
 
 def plot_2009bb(ax, background):
@@ -160,7 +160,8 @@ def plot_2009bb(ax, background):
     evel = dat[:,3][choose].astype(float)
     offset = 13
     dt = phase+offset
-    ax.errorbar(dt, vel/1E3, c=col, alpha=0.5, lw=3)
+    ax.plot(
+            dt, vel/1E3, c=col, lw=GRBSN_lw, alpha=GRBSN_alpha)
 
 
 def plot_2012ap(ax, background):
@@ -180,7 +181,8 @@ def plot_2012ap(ax, background):
     vel = dat[:,2][choose].astype(float)*-1
     evel = dat[:,3][choose].astype(float)
     dt = phase+offset
-    ax.errorbar(dt, vel/1E3, c=col, alpha=0.5, lw=3)
+    ax.plot(
+            dt, vel/1E3, c=col, lw=GRBSN_lw, alpha=GRBSN_alpha)
 
 
 def plot_17cw(ax, background):
@@ -194,7 +196,8 @@ def plot_17cw(ax, background):
         ax.text(0.1, 0.8, "iPTF17cw", fontsize=12, transform=ax.transAxes)
     dt = np.array([17, 43]) + 18 # since maximum light
     v = np.array([17300, 17500]) / 1E3
-    ax.errorbar(dt, v, c=col, alpha=0.5, lw=3)
+    ax.plot(
+            dt, v, c=col, lw=GRBSN_lw, alpha=GRBSN_alpha)
 
 
 def plot_2003lw():
@@ -358,4 +361,4 @@ if __name__=="__main__":
     fig.subplots_adjust(wspace=0.1, hspace=0.2)
 
     #plt.show()
-    plt.savefig("vel.png", format='eps', dpi=1000)
+    plt.savefig("vel.png", dpi=500)
