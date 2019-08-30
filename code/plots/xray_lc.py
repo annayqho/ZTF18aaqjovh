@@ -18,39 +18,9 @@ yell = '#f6d746'
 ddir = "/Users/annaho/Dropbox/Projects/Research/IcBL/data/radio_compilations"
 
 
-def ujy_to_flux(ujy, z):
-    d = Planck15.luminosity_distance(z=z).cgs.value
-    return ujy*1E-6*1E-23*4*np.pi*d**2
-
-
 def plot_source(ax):
-    lw=3
-    # 6 GHz LC
-    ax.plot(
-            [16, 22, 34], 
-            ujy_to_flux(np.array([32.5, 29.6, 26.6]), 0.05403), 
-            c=dark, lw=lw, label="_nolegend_")
-    ax.errorbar(
-            [16, 22, 34], 
-            ujy_to_flux(np.array([32.5, 29.6, 26.6]), 0.05403), 
-            yerr=ujy_to_flux(np.array([7.1, 5.3, 5.4]), 0.05403),
-            c=dark, fmt='o')
-
-    # 3 GHz LC
-    ax.plot(
-            [21, 36], 
-            ujy_to_flux(np.array([26, 34.6]), 0.05403), 
-            c=purp, lw=lw)
-    ax.errorbar(
-            [21, 36], 
-            ujy_to_flux(np.array([26, 34.6]), 0.05403), 
-            yerr=ujy_to_flux(np.array([6.9, 4.8]), 0.05403),
-            c=purp, fmt='s')
-
-    # 15 GHz LC
-    ax.errorbar(21, ujy_to_flux(15.2, 0.05403), 
-            yerr=ujy_to_flux(5.2, 0.05403),
-            c=orag, fmt='D')
+    # Chandra points
+    ax.scatter(33, 1.9E40, c=dark, marker='v')
 
 
 def plot_98bw(ax, background=False):
@@ -134,7 +104,7 @@ def plot_0316d(ax, background=False):
     freq = dat['freq']
     choose = freq== 5.4
     t = dat['dt'][choose]
-    lum = ujy_to_flux(dat['flux'][choose], z)
+    lum = dat['flux'][choose]
     toplot = dat['fluxerr'][choose] > 0
     ax.plot(t[toplot], lum[toplot], c=col, label="_nolegend_")
 
@@ -143,7 +113,7 @@ def plot_0316d(ax, background=False):
     freq = dat['freq']
     choose = freq== 9
     t = dat['dt'][choose]
-    lum = ujy_to_flux(dat['flux'][choose], z)
+    lum = dat['flux'][choose]
     toplot = dat['fluxerr'][choose] > 0
     ax.scatter(
             t[toplot], lum[toplot], c=col, marker='.', label="_nolegend_") 
@@ -163,7 +133,7 @@ def plot_06aj(ax, background=False):
     freq = dat['freq']
     choose = freq== 4.86
     t = dat['dt'][choose]
-    lum = ujy_to_flux(dat['flux'][choose], z)
+    lum = dat['flux'][choose]
     toplot = dat['fluxerr'][choose] > 0
     ax.plot(t[toplot], lum[toplot], c=col, label="_nolegend_")
 
@@ -172,7 +142,7 @@ def plot_06aj(ax, background=False):
     freq = dat['freq']
     choose = freq== 8.46
     t = dat['dt'][choose]
-    lum = ujy_to_flux(dat['flux'][choose], z)
+    lum = dat['flux'][choose]
     toplot = dat['fluxerr'][choose] > 0
     ax.plot(t[toplot], lum[toplot], c=col, label="_nolegend_")
 
@@ -182,7 +152,7 @@ def plot_06aj(ax, background=False):
     freq = dat['freq']
     choose = freq== 15
     t = dat['dt'][choose]
-    lum = ujy_to_flux(dat['flux'][choose], z)
+    lum = dat['flux'][choose]
     toplot = dat['fluxerr'][choose] > 0
     ax.plot(t[toplot], lum[toplot], c=col, label="_nolegend_")
 
@@ -198,21 +168,21 @@ def plot_17cw(ax, background=False):
         col = dark
     t = np.array([12.6, 15.7, 21.6, 30.7, 41.6])
     flux = np.array([38.1, 30.4, 19.9, 22.4, 19])
-    lum = ujy_to_flux(flux, z)
+    lum = flux
     ax.plot(t, lum, c=col, label='_nolegend_')
 
     if background is False:
         col = purp
     t = np.array([15.9, 24.9, 41.6])
     flux = np.array([50, 41.4, 44])
-    lum = ujy_to_flux(flux, z)
+    lum = flux
     ax.plot(t, lum, c=col, label='_nolegend_')
 
     if background is False:
         col = orag
     t = np.array([15.9, 24.9, 65.6, 105])
     flux = np.array([25.4, 21.1, 20.2, 10.7])
-    lum = ujy_to_flux(flux, z)
+    lum = flux
     ax.plot(t, lum, c=col, label='_nolegend_')
 
     if background==False:
@@ -228,14 +198,14 @@ def plot_12ap(ax, background=False):
         col = yell
     t = np.array([12, 18.2])
     flux = np.array([5.85, 5.69]) * 1E3
-    lum = ujy_to_flux(flux, z)
+    lum = flux
     ax.plot(t, lum, c=col, label='_nolegend_')
 
     if background is False:
         col = dark
     t = np.array([27, 37.9])
     flux = np.array([4.71, 4.20]) * 1E3
-    lum = ujy_to_flux(flux, z)
+    lum = flux
     ax.plot(t, lum, c=col, label='_nolegend_')
 
     if background==False:
@@ -249,43 +219,21 @@ if __name__=="__main__":
     for ii,ax in enumerate(axarr.reshape(-1)):
         # LC of ZTF18aaqjovh
         plot_source(ax)
-        plot_98bw(ax, background=True)
-        plot_09bb(ax, background=True)
-        plot_0316d(ax, background=True)
-        plot_12ap(ax, background=True)
-        plot_06aj(ax, background=True)
-        plot_17cw(ax, background=True)
         ax.yaxis.set_tick_params(labelsize=14)
         ax.xaxis.set_tick_params(labelsize=14)
         ax.set_yscale('log')
         ax.set_xlim(0, 40)
-        ax.set_ylim(1E26, 1E29)
-
-    plot_98bw(axarr[0,0])
-    plot_09bb(axarr[0,1])
-    plot_0316d(axarr[1,0])
-    plot_12ap(axarr[1,1])
-    plot_06aj(axarr[2,0])
-    plot_17cw(axarr[2,1])
+        ax.set_ylim(1E39, 1E45)
 
     fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=16) 
     fig.text(
-            0.04, 0.5, r'Radio Luminosity ($10^{27}$ erg/s)', 
+            0.04, 0.5, r'0.3--10 keV X-ray Luminosity (erg/s)', 
             fontsize=16, rotation='vertical', horizontalalignment='center',
             verticalalignment='center')
 
     fig.subplots_adjust(wspace=0.1, hspace=0.1)
-    #plt.tight_layout()
 
-    # Legend
-    ax = axarr[0,1]
-    ax.plot([1,2],[3,4],c=purp,label="2-4 GHz", lw=2)
-    ax.plot([1,2],[3,4],c=dark,label="4-8 GHz", lw=2)
-    ax.plot([1,2],[3,4],c=yell,label="8-12 GHz", lw=2)
-    ax.plot([1,2],[3,4],c=orag,label="12-18 GHz", lw=2)
-    ax.legend(loc='upper center', bbox_to_anchor=(0, 1.3), ncol=2)
-
-    #plt.show()
-    plt.savefig(
-        "radio_lc.eps", format='eps', dpi=500, bbox_inches='tight',
-        pad_inches=0.1)
+    plt.show()
+    #plt.savefig(
+    #    "xray_lc.eps", format='eps', dpi=500, bbox_inches='tight',
+    #    pad_inches=0.1)

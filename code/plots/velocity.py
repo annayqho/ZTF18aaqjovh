@@ -1,6 +1,7 @@
 """ Plot of velocity vs. time """
 
 import glob
+import matplotlib
 import matplotlib.pyplot as plt
 plt.rc("font", family="serif")
 plt.rc("text", usetex=True)
@@ -23,18 +24,18 @@ FASTSN_col = '#84206b'
 FASTSN_lw = 3
 FASTSN_alpha = 0.5
 
-def plot_18aaqjovh():
+def plot_18aaqjovh(ax):
     """ haven't defined a t0 yet """
     offset = 10 # days between t_0 and the first day
     dt = np.array([4,10,34])+offset
     vel = np.array([21394,18380,11229])
     evel = np.array([4647,5432,3306])
-    plt.errorbar(
+    ax.errorbar(
             dt, vel/1E3, yerr=evel/1E3, 
             fmt='s', c='k', label="ZTF18aaqjovh", 
             zorder=10, ms=10, lw=2)
 
-    plt.plot(dt,vel/1E3,
+    ax.plot(dt,vel/1E3,
         c='k', ls='-', lw=3, zorder=5)
 
 
@@ -301,29 +302,33 @@ def plot_population():
 
 
 if __name__=="__main__":
-    fig,ax = plt.subplots(1, 1, figsize=(8,5))
+    fig,axarr = plt.subplots(
+            3, 2, figsize=(6,6), sharex=True, sharey=True)
 
-    plot_18aaqjovh()
-    plot_18gep()
-    plot_16asu()
-    grb171205a()
-    plot_1998bw()
-    plot_2006aj()
-    plot_2003lw()
-    plot_2010bh()
-    plot_12gzk()
+    for ii,ax in enumerate(axarr.reshape(-1)):
+        plot_18aaqjovh(ax)
+        ax.yaxis.set_tick_params(labelsize=14)
+        ax.xaxis.set_tick_params(labelsize=14)
+        ax.set_yscale('log')
+        ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+        ax.set_xlim(0, 33)
+        ax.set_ylim(10, 100)
 
-    # Formatting
-    plt.legend(fontsize=14, loc='upper right', ncol=1)
-    plt.xlabel(r"Time since explosion (days)", fontsize=16)
-    plt.ylabel(
-            r"Fe II Velocity ($10^3$ km/s)", fontsize=16)
-    plt.yscale('log')
-    #plt.xscale('log')
-    plt.xlim(0, 31)
-    plt.ylim(10, 100)
-    plt.tick_params(axis='both', labelsize=16)
-    plt.tight_layout()
+    # plot_18gep()
+    # plot_16asu()
+    # grb171205a()
+    # plot_1998bw()
+    # plot_2006aj()
+    # plot_2003lw()
+    # plot_2010bh()
+    # plot_12gzk()
 
-    #plt.show()
-    plt.savefig("vel.eps", format='eps', dpi=1000)
+    fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=16)
+    fig.text(
+            0.04, 0.5, r'Fe II Velocity ($10^3$ km/s)',
+            fontsize=16, rotation='vertical', horizontalalignment='center',
+            verticalalignment='center')
+    fig.subplots_adjust(wspace=0.1, hspace=0.2)
+
+    plt.show()
+    #plt.savefig("vel.eps", format='eps', dpi=1000)

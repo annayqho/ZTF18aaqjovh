@@ -270,11 +270,11 @@ if __name__=="__main__":
 
     fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=16) 
     fig.text(
-            0.04, 0.5, r'Radio Luminosity ($10^{27}$ erg/s)', 
+            0.04, 0.5, r'Radio Luminosity (erg/s/Hz)', 
             fontsize=16, rotation='vertical', horizontalalignment='center',
             verticalalignment='center')
 
-    fig.subplots_adjust(wspace=0.1, hspace=0.1)
+    fig.subplots_adjust(wspace=0.1, hspace=0.2)
     #plt.tight_layout()
 
     # Legend
