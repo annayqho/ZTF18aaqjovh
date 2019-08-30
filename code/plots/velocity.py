@@ -90,7 +90,7 @@ def plot_1998bw(ax, background=False):
     col = 'lightgrey'
     if background is False:
         col = GRBSN_col
-        ax.text(0.1, 0.1, "SN1998bw", fontsize=12, transform=ax.transAxes)
+        ax.text(0.1, 0.8, "SN1998bw", fontsize=12, transform=ax.transAxes)
 
     name = 'sn1998bw'
     choose = names==name
@@ -111,7 +111,7 @@ def plot_2006aj(ax, background=False):
     col = 'lightgrey'
     if background is False:
         col = GRBSN_col
-        ax.text(0.1, 0.1, "SN2006aj", fontsize=12, transform=ax.transAxes)
+        ax.text(0.1, 0.8, "SN2006aj", fontsize=12, transform=ax.transAxes)
     name = 'sn2006aj'
     choose = names==name
     phase = dat[:,1][choose].astype(float)
@@ -132,7 +132,7 @@ def plot_2010bh(ax, background):
     col = 'lightgrey'
     if background is False:
         col = GRBSN_col
-        ax.text(0.1, 0.1, "SN2010bh", fontsize=12, transform=ax.transAxes)
+        ax.text(0.1, 0.8, "SN2010bh", fontsize=12, transform=ax.transAxes)
     name = 'sn2010bh'
     choose = names==name
     phase = dat[:,1][choose].astype(float)
@@ -150,7 +150,7 @@ def plot_2009bb(ax, background):
     col = 'lightgrey'
     if background is False:
         col = GRBSN_col
-        ax.text(0.1, 0.1, "SN2009bb", fontsize=12, transform=ax.transAxes)
+        ax.text(0.1, 0.8, "SN2009bb", fontsize=12, transform=ax.transAxes)
     name = 'sn2009bb'
     # explosion epoch: March 19
     # maximum light: Apr 1 (Soderberg 2009)
@@ -161,6 +161,40 @@ def plot_2009bb(ax, background):
     offset = 13
     dt = phase+offset
     ax.errorbar(dt, vel/1E3, c=col, alpha=0.5, lw=3)
+
+
+def plot_2012ap(ax, background):
+    dat = np.loadtxt(DATA_DIR + "/modjaz_vel.txt", dtype=str, delimiter=';')
+    names = np.array([val.strip() for val in dat[:,0]])
+    col = 'lightgrey'
+    if background is False:
+        col = GRBSN_col
+        ax.text(0.1, 0.8, "SN2012ap", fontsize=12, transform=ax.transAxes)
+    name = 'sn2012ap'
+    # explosion date: 2012 Feb 5
+    # maximum light: let's use the B-band max from Milisavljevic 2014,
+    # which is on Feb 18.2, so that's 13 days
+    offset = 13
+    choose = names == name
+    phase = dat[:,1][choose].astype(float)
+    vel = dat[:,2][choose].astype(float)*-1
+    evel = dat[:,3][choose].astype(float)
+    dt = phase+offset
+    ax.errorbar(dt, vel/1E3, c=col, alpha=0.5, lw=3)
+
+
+def plot_17cw(ax, background):
+    # iPTF17cw
+    # max light: 57760.666 is 8 days before maximum light
+    # explosion time set to be 57750.552
+    # so it's 18 days to maximum
+    col = 'lightgrey'
+    if background is False:
+        col = GRBSN_col
+        ax.text(0.1, 0.8, "iPTF17cw", fontsize=12, transform=ax.transAxes)
+    dt = np.array([17, 43]) + 18 # since maximum light
+    v = np.array([17300, 17500]) / 1E3
+    ax.errorbar(dt, v, c=col, alpha=0.5, lw=3)
 
 
 def plot_2003lw():
@@ -232,31 +266,7 @@ def plot_population():
     vel = -1*dat['vabs']/1E3
 
 
-    name = 'sn2012ap'
-    # explosion date: 2012 Feb 5
-    # maximum light: let's use the B-band max from Milisavljevic 2014,
-    # which is on Feb 18.2, so that's 13 days
-    offset = 13
-    choose = names == name
-    dt = phase[choose]+offset
-    v = vel[choose]
-    plt.plot(dt, v, c='grey')
-    plt.scatter(dt, v, c='grey')
-    plt.text(dt[0], v[0], 'SN2012ap',
-            horizontalalignment='right', fontsize=12,
-            verticalalignment='center', zorder=5)
 
-    # iPTF17cw
-    # max light: 57760.666 is 8 days before maximum light
-    # explosion time set to be 57750.552
-    # so it's 18 days to maximum
-    dt = np.array([17, 43]) + 18 # since maximum light
-    v = np.array([17300, 17500]) / 1E3
-    plt.plot(dt, v, c='grey')
-    plt.scatter(dt, v, c='grey')
-    plt.text(dt[0], v[0]/1.03, 'iPTF17cw',
-            horizontalalignment='left', fontsize=12,
-            verticalalignment='top', zorder=5)
 
     # 2008D: measured using He I 5876 lines
     dt = np.array(
@@ -310,7 +320,7 @@ def plot_population():
 
 if __name__=="__main__":
     fig,axarr = plt.subplots(
-            3, 2, figsize=(6,6), sharex=True, sharey=True)
+            3, 2, figsize=(6,6), sharex=False, sharey=True)
 
     for ii,ax in enumerate(axarr.reshape(-1)):
         plot_18aaqjovh(ax)
@@ -318,6 +328,8 @@ if __name__=="__main__":
         plot_2006aj(ax, background=True)
         plot_2010bh(ax, background=True)
         plot_2009bb(ax, background=True)
+        plot_2012ap(ax, background=True)
+        plot_17cw(ax, background=True)
         # plot_18gep()
         # plot_16asu()
         # grb171205a()
@@ -335,6 +347,9 @@ if __name__=="__main__":
     plot_2010bh(axarr[1,0], background=False)
     plot_2006aj(axarr[2,0], background=False)
     plot_2009bb(axarr[0,1], background=False)
+    plot_2012ap(axarr[1,1], background=False)
+    plot_17cw(axarr[2,1], background=False)
+    axarr[2,1].set_xlim(0, 60)
     fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=16)
     fig.text(
             0.04, 0.5, r'Fe II Velocity ($10^3$ km/s)',
@@ -342,5 +357,5 @@ if __name__=="__main__":
             verticalalignment='center')
     fig.subplots_adjust(wspace=0.1, hspace=0.2)
 
-    plt.show()
-    #plt.savefig("vel.eps", format='eps', dpi=1000)
+    #plt.show()
+    plt.savefig("vel.png", format='eps', dpi=1000)
