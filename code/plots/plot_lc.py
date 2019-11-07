@@ -21,8 +21,7 @@ z = 0.05403
 
 
 def plot_98bw(ax):
-    #datadir = "/Users/annaho/Dropbox/Projects/Research/IcBL/data"
-    datadir = "."
+    datadir = "/Users/annaho/Dropbox/Projects/Research/IcBL/data/"
     dat = ascii.read(datadir + "/sn1998bw.dat", delimiter=';')
     jd = dat['JD']
     rband = dat['Rcmag']

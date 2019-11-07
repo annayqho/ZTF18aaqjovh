@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from astropy.table import Table
 from astropy.cosmology import Planck15
+from radio_lc import ujy_to_flux
 
 
 smallsize=12
@@ -84,6 +85,20 @@ def density_curves(ax, x, ne):
 
 
 def lumtnu(ax):
+    # ZTF18aaqjovh
+    xmin = 20*(3/5)
+    xmax = 20*(15/5)
+    xavg = (xmin+xmax)/2
+    ymin = ujy_to_flux(20, 0.05403)
+    ymax = ujy_to_flux(30, 0.05403)
+    yavg = (ymin+ymax)/2
+    ax.plot([xmin,xmax],[yavg,yavg],c='k')
+    ax.plot([xavg,xavg],[ymin,ymax],c='k')
+    ax.text(
+            xmax, ymin, "ZTF18aaqjovh", fontsize=medsize,
+            verticalalignment='center',
+            horizontalalignment='right')
+
     # 11qcj
     tnu = (100)*(5/5)
     lpeak = 7E28
@@ -150,16 +165,6 @@ def lumtnu(ax):
             tnu/1.2, lpeak, "2009bb", fontsize=medsize,
             verticalalignment='center',
             horizontalalignment='right')
-
-    # SN 2018gep
-    tnu = (5)*(9/5)
-    lpeak = 8.3E26
-    ax.scatter(
-            tnu, lpeak, marker='+', c='k', s=100, label=None)
-    ax.text(
-            tnu, lpeak/1.3, "SN2018gep", fontsize=medsize,
-            verticalalignment='top',
-            horizontalalignment='center')
 
     # SN 2006aj
     tnu = (5)*(4/5)
@@ -241,5 +246,5 @@ ax2.set_xlim(2,3000)
 plt.tight_layout()
 
 
-plt.show()
-#plt.savefig("lum_tnu.pdf")
+#plt.show()
+plt.savefig("lum_tnu.png", dpi=500)
