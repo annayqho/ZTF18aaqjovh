@@ -49,7 +49,7 @@ rowstr += "%s \\\ \n"
 
 outputf = open("table_%s.txt" %label, "w")
 outputf.write("\\startlongtable \n")
-outputf.write("\\begin{deluxetable}{%s} \n" %colstr)
+outputf.write("\\begin{deluxetable*}{%s} \n" %colstr)
 outputf.write("\\tablecaption{%s\label{tab:%s}} \n" %(caption,label))
 outputf.write("\\tablewidth{0pt} \n")
 outputf.write("\\tablehead{ %s } \n" %colheadstr)
@@ -63,15 +63,15 @@ f = data_dir + "/ZTF18aaqjovh.csv"
 lc = ascii.read(f)
 det = lc['mag'] < 99
 mjd = lc['mjd'][det]
-tel = np.array(['P48']*len(dt))
+tel = np.array(['P48']*len(mjd))
 mag = lc['mag'][det]
 emag = lc['magerr'][det]
 
 # add P60 photometry
-mjd = np.hstack((mjd, [2458247.8588, 2458248.8353]))
+mjd = np.hstack((mjd, [2458247.8588-2400000.5, 2458248.8353-2400000.5]))
 tel = np.hstack((tel, ['P60', 'P60']))
-mag = np.hstack((tel, [18.30, 18.21]))
-emag = np.hstack((tel, [0.04, 0.03]))
+mag = np.hstack((mag, [18.30, 18.21]))
+emag = np.hstack((emag, [0.04, 0.03]))
 
 # generate dt
 dt = mjd-t0
@@ -82,6 +82,7 @@ mjd = mjd[order]
 dt = dt[order]
 mag = mag[order]
 emag = emag[order]
+tel = tel[order]
 
 for ii in np.arange(len(dt)):
     mjd_str = round_sig(mjd[ii], 11)
@@ -94,4 +95,4 @@ for ii in np.arange(len(dt)):
     outputf.write(row)
 
 outputf.write("\enddata \n")
-outputf.write("\end{deluxetable} \n")
+outputf.write("\end{deluxetable*} \n")

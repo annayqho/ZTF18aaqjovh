@@ -199,18 +199,18 @@ if __name__=="__main__":
         plot_spec(ax, wl[choose], (shifted-shift[ii])[choose], tel, dt)
         plot_smoothed_spec(
                 ax, wl[choose], (shifted-shift[ii])[choose], 
-                ivar[choose], tel, dt)
+                ivar[choose], tel, dt, lw=2)
     for ii in np.arange(5):
         wcomp,fcomp = get_98bw(ii)
         scale = fcomp[wcomp>4100][ii]
         shifted = fcomp/scale-bw_shift[ii]
         if ii == 0:
             ax.plot(
-                    wcomp,shifted,c='r',lw=1,alpha=0.5,
+                    wcomp,shifted,c='k',lw=0.3,
                     label="98bw at similar phase")
         else:
             ax.plot(
-                    wcomp,shifted,c='r',lw=1,alpha=0.5,
+                    wcomp,shifted,c='k',lw=0.3,
                     label='_nolegend_')
 
     plt.tick_params(axis='both', labelsize=14)
