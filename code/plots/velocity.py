@@ -25,11 +25,10 @@ FASTSN_lw = 3
 FASTSN_alpha = 0.5
 
 def plot_18aaqjovh(ax):
-    """ haven't defined a t0 yet """
-    offset = 10 # days between t_0 and the first day
-    dt = np.array([4,10,34])+offset
-    vel = np.array([21394,18380,11229])
-    evel = np.array([4647,5432,3306])
+    """ """
+    dt = np.array([14,19,20,44])
+    vel = np.array([21394,17443,18380,11229])
+    evel = np.array([4647,2797,5432,3306])
     ax.errorbar(
             dt, vel/1E3, yerr=evel/1E3, 
             fmt='s', c='k', label="ZTF18aaqjovh", 

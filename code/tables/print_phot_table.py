@@ -63,14 +63,25 @@ f = data_dir + "/ZTF18aaqjovh.csv"
 lc = ascii.read(f)
 det = lc['mag'] < 99
 mjd = lc['mjd'][det]
+tel = np.array(['P48']*len(dt))
+mag = lc['mag'][det]
+emag = lc['magerr'][det]
+
+# add P60 photometry
+mjd = np.hstack((mjd, [2458247.8588, 2458248.8353]))
+tel = np.hstack((tel, ['P60', 'P60']))
+mag = np.hstack((tel, [18.30, 18.21]))
+emag = np.hstack((tel, [0.04, 0.03]))
+
+# generate dt
 dt = mjd-t0
 
+# sort
 order = np.argsort(dt)
-
 mjd = mjd[order]
 dt = dt[order]
-mag = lc['mag'][det][order]
-emag = lc['magerr'][det][order]
+mag = mag[order]
+emag = emag[order]
 
 for ii in np.arange(len(dt)):
     mjd_str = round_sig(mjd[ii], 11)
@@ -78,7 +89,7 @@ for ii in np.arange(len(dt)):
     mag_str = str(round_sig(mag[ii], 4)).zfill(5)
     emag_str = str(np.round(emag[ii], ndec(mag_str))).zfill(4)
     row = rowstr %(
-            mjd_str, dt_str, "P48", r"$r$", 
+            mjd_str, dt_str, tel[ii], r"$r$", 
             mag_str, emag_str)
     outputf.write(row)
 
