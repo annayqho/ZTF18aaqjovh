@@ -10,7 +10,6 @@ rc("text", usetex=True)
 from astropy.io import ascii
 from ztfquery import query
 from ztfquery import marshal
-import extinction
 import glob
 from astropy.time import Time
 sys.path.append("/Users/annaho/Github/Spectra")
@@ -222,4 +221,4 @@ if __name__=="__main__":
     ax.get_yaxis().set_ticks([])
     plt.tight_layout()
     #plt.show()
-    plt.savefig("spec_sequence.eps", format='eps', dpi=500, bbox_inches='tight')
+    plt.savefig("spec_sequence.png", dpi=500, bbox_inches='tight')

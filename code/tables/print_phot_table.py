@@ -84,11 +84,18 @@ mag = mag[order]
 emag = emag[order]
 tel = tel[order]
 
+# remove duplicate entries
+mjd,ind = np.unique(mjd, return_index=True)
+dt = dt[ind]
+mag = mag[ind]
+emag = emag[ind]
+tel = tel[ind]
+
 for ii in np.arange(len(dt)):
-    mjd_str = round_sig(mjd[ii], 11)
-    dt_str = np.round(dt[ii], 2)
-    mag_str = str(round_sig(mag[ii], 4)).zfill(5)
-    emag_str = str(np.round(emag[ii], ndec(mag_str))).zfill(4)
+    mjd_str = '{:<08f}'.format(round_sig(mjd[ii], 11)) # pad with zeros
+    dt_str = '{:.2f}'.format(np.round(dt[ii], 2))
+    mag_str = '{:.2f}'.format(round_sig(mag[ii], 4))
+    emag_str = '{:.2f}'.format(np.round(emag[ii], ndec(mag_str)))
     row = rowstr %(
             mjd_str, dt_str, tel[ii], r"$r$", 
             mag_str, emag_str)
