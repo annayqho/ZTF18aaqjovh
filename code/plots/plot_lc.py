@@ -21,7 +21,7 @@ z = 0.05403
 
 
 def plot_98bw(ax):
-    datadir = "/Users/annaho/Dropbox/Projects/Research/IcBL/data/"
+    datadir = "/Users/annaho/Dropbox/Projects/Research/IcBL/data/optical_compilations"
     dat = ascii.read(datadir + "/sn1998bw.dat", delimiter=';')
     jd = dat['JD']
     rband = dat['Rcmag']
@@ -29,7 +29,7 @@ def plot_98bw(ax):
     dm = Planck15.distmod(z=z).value-Planck15.distmod(z=0.0085).value
     ax.plot(jd-jd[0], rband+dm, color='k', lw=0.5, label="98bw")
     ax.plot(
-            (jd-jd[0]), (rband+dm)+0.5, color='k', 
+            (jd-jd[0])/(1.0085), (rband+dm)+0.5, color='k', 
             lw=0.5, ls='--', label="98bw+0.5 mag")
     print(jd[0])
     # ax.fill_between(
@@ -59,8 +59,7 @@ def load_marshal_lc():
 
 
 def load_danny_lc(ax):
-    #data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data"
-    data_dir = "."
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data"
     f = data_dir + "/ZTF18aaqjovh.csv"
     lc = ascii.read(f)
     det = lc['mag'] < 99
@@ -79,7 +78,7 @@ def load_danny_lc(ax):
     # Plot r-band upper limits
     choose = lc['filter'][~det] == 'ztfr'
     ax.errorbar(
-            dt_nondet[choose], lm[choose], fmt='v', c='k', label=None)
+            (dt_nondet[choose])/1.05403, lm[choose], fmt='v', c='k', label=None)
 
     # Show some spectral epochs with an S
     sp = [14, 19, 20, 44, 105]
@@ -89,12 +88,12 @@ def load_danny_lc(ax):
 
 
 if __name__=="__main__":
-    fig,ax = plt.subplots(1,1,figsize=(7, 6))
+    fig,ax = plt.subplots(1,1,figsize=(9, 7))
 
-    #load_danny_lc(ax)
-    #plot_98bw(ax)
+    load_danny_lc(ax)
+    plot_98bw(ax)
 
-    ax.set_xlabel("Days Since Last Non-Detection", fontsize=16)
+    ax.set_xlabel("Days (Rest-frame) Since Last Non-Detection of ZTF18aaqjovh", fontsize=16)
     ax.set_ylabel("Apparent Mag (AB)", fontsize=16)
     ax.set_ylim(17.5,21)
     ax.set_xlim(-1,52)
@@ -114,6 +113,5 @@ if __name__=="__main__":
     ax2.set_xlim(-1,52)
 
     ax.legend(loc='lower right', fontsize=14)
-    fig.tight_layout()
     #plt.show()
-    plt.savefig('lc.png', dpi=1000)
+    plt.savefig('lc.png', dpi=100)

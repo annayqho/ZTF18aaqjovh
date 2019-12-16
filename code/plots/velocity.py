@@ -343,6 +343,7 @@ if __name__=="__main__":
         ax.set_yscale('log')
         ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
         ax.set_xlim(0, 33)
+        ax.set_xticks([0,10,20,30])
         ax.set_ylim(10, 100)
 
     plot_1998bw(axarr[0,0], background=False)
@@ -352,6 +353,7 @@ if __name__=="__main__":
     plot_2012ap(axarr[1,1], background=False)
     plot_17cw(axarr[2,1], background=False)
     axarr[2,1].set_xlim(0, 60)
+    axarr[2,1].set_xticks([0, 20, 40, 60])
     fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=16)
     fig.text(
             0.04, 0.5, r'Fe II Velocity ($10^3$ km/s)',
