@@ -4,6 +4,7 @@ Light curve was retrieved in ZTF_Tools/query_lc.py,
 and saved to a text file lc.dat
 """
 
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc("font", family="serif")
@@ -27,73 +28,66 @@ def plot_98bw(ax):
     rband = dat['Rcmag']
     erband = dat['e_Rcmag']
     dm = Planck15.distmod(z=z).value-Planck15.distmod(z=0.0085).value
-    ax.plot(jd-jd[0], rband+dm, color='k', lw=0.5, label="98bw")
+    ax.plot(jd-jd[0], rband+dm, color='#e55c30', lw=0.5, label="98bw $Rc$")
     ax.plot(
-            (jd-jd[0])/(1.0085), (rband+dm)+0.5, color='k', 
-            lw=0.5, ls='--', label="98bw+0.5 mag")
-    print(jd[0])
+            (jd-jd[0])/(1.0085), (rband+dm)+0.5, color='#e55c30', 
+            lw=0.5, ls='--', label="98bw $Rc$+0.5 mag")
+    gband = dat['Bmag']
+    egband = dat['e_Bmag']
+    ax.plot(jd-jd[0], gband+dm, color='#140b34', lw=0.5, label="98bw $B$")
+    ax.plot(
+            (jd-jd[0])/(1.0085), (gband+dm)+0.5, color='#140b34', 
+            lw=0.5, ls='--', label="98bw $B$+0.5 mag")
     # ax.fill_between(
     #         jd-jd[0], rband+dm-erband, 
     #         rband+dm+erband, color='lightgrey')
 
 
-#def download_lc():
-#     """ Download the light curve """
-#     # connect to databases
-#     m = marshal.MarshalAccess()
-#     print("Connected")
-# 
-#     # download light curves
-#     marshal.download_lightcurve('ZTF18aaqjovh')
 
-
-def load_marshal_lc():
-    f = "Data/marshal/lightcurves/ZTF18aaqjovh/marshal_plot_lc_lightcurve_ZTF18aaqjovh.csv"
-    lc = ascii.read(f)
-    det = lc['mag'] < 99
-    dt = lc['jdobs'][det]-lc['jdobs'][det][0]
-    mag = lc['mag'][det]
-    emag = lc['emag'][det]
-    dt_nondet = lc['jdobs'][~det]-lc['jdobs'][det][0]
-    lm = lc['limmag'][~det]
-
-
-def load_danny_lc(ax):
-    data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data"
-    f = data_dir + "/ZTF18aaqjovh.csv"
-    lc = ascii.read(f)
-    det = lc['mag'] < 99
-    dt = lc['mjd'][det]-t0
-    mag = lc['mag'][det]
-    emag = lc['magerr'][det]
-    dt_nondet = lc['mjd'][~det]-t0
-    lm = lc['lim_mag'][~det]
+def load_lc(ax):
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/code/forced_phot"
 
     # Plot r-band light curve
-    choose = lc['filter'][det] == 'ztfr'
+    f = data_dir + "/ZTF18aaqjovh_force_phot_lc_r.txt"
+    lc = np.loadtxt(f)
+    dt = lc[:,0]-2400000.5-t0
+    mag = lc[:,1]
+    emag = lc[:,2]
+    choose = np.logical_and(emag < 0.5, emag >= 0.03)
     ax.errorbar(
             dt[choose], mag[choose], yerr=emag[choose], 
-            fmt='o', c='k', label="ZTF18aaqjovh")
+            fmt='o', c='#e55c30', label="ZTF18aaqjovh, $r$")
 
-    # Plot r-band upper limits
-    choose = lc['filter'][~det] == 'ztfr'
+    # Plot g-band light curve
+    f = data_dir + "/ZTF18aaqjovh_force_phot_lc_g.txt"
+    lc = np.loadtxt(f)
+    dt = lc[:,0]-2400000.5-t0
+    mag = lc[:,1]
+    emag = lc[:,2]
+    choose = np.logical_and(emag < 0.5, emag >= 0.03)
     ax.errorbar(
-            (dt_nondet[choose])/1.05403, lm[choose], fmt='v', c='k', label=None)
+            dt[choose], mag[choose], yerr=emag[choose], 
+            fmt='s', c='#140b34', label="ZTF18aaqjovh, $g$")
 
     # Show some spectral epochs with an S
     sp = [14, 19, 20, 44, 105]
     for s in sp:
         ax.text(s, 17.7, "S", fontsize=12)
 
+    # Plot the last non-detection
+    ax.scatter(0, 20.6, marker='v', c='k')
 
 
 if __name__=="__main__":
     fig,ax = plt.subplots(1,1,figsize=(9, 7))
 
-    load_danny_lc(ax)
+    load_lc(ax)
     plot_98bw(ax)
 
-    ax.set_xlabel("Days (Rest-frame) Since Last Non-Detection of ZTF18aaqjovh", fontsize=16)
+
+    ax.set_xlabel(
+            "Days (Rest-frame) Since Last Non-Detection of ZTF18aaqjovh", 
+            fontsize=16)
     ax.set_ylabel("Apparent Mag (AB)", fontsize=16)
     ax.set_ylim(17.5,21)
     ax.set_xlim(-1,52)
@@ -112,6 +106,6 @@ if __name__=="__main__":
             "Absolute Mag (AB)", fontsize=16, rotation=270, va='bottom')
     ax2.set_xlim(-1,52)
 
-    ax.legend(loc='lower right', fontsize=14)
-    #plt.show()
-    plt.savefig('lc.png', dpi=100)
+    ax.legend(loc='lower center', fontsize=12, ncol=2)
+    plt.show()
+    #plt.savefig('lc.png', dpi=100)
