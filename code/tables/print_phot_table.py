@@ -57,21 +57,41 @@ outputf.write("\\tablehead{ %s } \n" %colheadstr)
 outputf.write("\\tabletypesize{\scriptsize} \n")
 outputf.write("\startdata \n")
 
-data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data"
+data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/code/forced_phot"
 t0 = 58233.17615 # time of the last non-detection, in MJD
-f = data_dir + "/ZTF18aaqjovh.csv"
-lc = ascii.read(f)
-det = lc['mag'] < 99
-mjd = lc['mjd'][det]
-tel = np.array(['P48']*len(mjd))
-mag = lc['mag'][det]
-emag = lc['magerr'][det]
+
+# g-band P48 photometry
+f = data_dir + "/ZTF18aaqjovh_force_phot_lc_g.txt"
+lc = np.loadtxt(f)
+jd = lc[:,0]
+mag = lc[:,1]
+det = ~np.isnan(mag) 
+mjd = jd[det]-2400000.5
+mag = mag[det]
+emag = lc[:,2][det]
+ndet = sum(det)
+tel = np.array(['P48']*ndet)
+filt = np.array(['g']*ndet)
+
+# add r-band P48 photometry
+f = data_dir + "/ZTF18aaqjovh_force_phot_lc_r.txt"
+lc = np.loadtxt(f)
+jd = lc[:,0]
+mag_r = lc[:,1]
+det = ~np.isnan(mag_r) 
+ndet = sum(det)
+mjd = np.hstack((mjd, jd[det]-2400000.5))
+mag = np.hstack((mag, mag_r[det]))
+emag = np.hstack((emag, lc[:,2][det]))
+tel = np.hstack((tel, np.array(['P48']*ndet)))
+filt = np.hstack((filt, np.array(['r']*ndet)))
 
 # add P60 photometry
 mjd = np.hstack((mjd, [2458247.8588-2400000.5, 2458248.8353-2400000.5]))
 tel = np.hstack((tel, ['P60', 'P60']))
 mag = np.hstack((mag, [18.30, 18.21]))
 emag = np.hstack((emag, [0.04, 0.03]))
+filt = np.hstack((filt, np.array(['r']*ndet)))
 
 # generate dt
 dt = mjd-t0
@@ -83,6 +103,7 @@ dt = dt[order]
 mag = mag[order]
 emag = emag[order]
 tel = tel[order]
+filt = filt[order]
 
 # remove duplicate entries
 mjd,ind = np.unique(mjd, return_index=True)
@@ -90,16 +111,18 @@ dt = dt[ind]
 mag = mag[ind]
 emag = emag[ind]
 tel = tel[ind]
+filt = filt[ind]
 
 for ii in np.arange(len(dt)):
-    mjd_str = '{:<08f}'.format(round_sig(mjd[ii], 11)) # pad with zeros
-    dt_str = '{:.2f}'.format(np.round(dt[ii], 2))
-    mag_str = '{:.2f}'.format(round_sig(mag[ii], 4))
-    emag_str = '{:.2f}'.format(np.round(emag[ii], ndec(mag_str)))
-    row = rowstr %(
-            mjd_str, dt_str, tel[ii], r"$r$", 
-            mag_str, emag_str)
-    outputf.write(row)
+    if(dt[ii] < 55):
+        mjd_str = '{:<08f}'.format(round_sig(mjd[ii], 11)) # pad with zeros
+        dt_str = '{:.2f}'.format(np.round(dt[ii], 2))
+        mag_str = '{:.2f}'.format(round_sig(mag[ii], 4))
+        emag_str = '{:.2f}'.format(np.round(emag[ii], ndec(mag_str)))
+        row = rowstr %(
+                mjd_str, dt_str, tel[ii], filt[ii], 
+                mag_str, emag_str)
+        outputf.write(row)
 
 outputf.write("\enddata \n")
 outputf.write("\end{deluxetable*} \n")

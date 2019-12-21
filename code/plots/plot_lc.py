@@ -38,6 +38,8 @@ def plot_98bw(ax):
     ax.plot(
             (jd-jd[0])/(1.0085), (gband+dm)+0.5, color='#140b34', 
             lw=0.5, ls='--', label="98bw $B$+0.5 mag")
+    ax.axvline(x=-0.1, c='k', lw=0.5)
+    ax.text(0,18.7,'GRB 980425', fontsize=10, rotation=270)
     # ax.fill_between(
     #         jd-jd[0], rband+dm-erband, 
     #         rband+dm+erband, color='lightgrey')
@@ -107,5 +109,5 @@ if __name__=="__main__":
     ax2.set_xlim(-1,52)
 
     ax.legend(loc='lower center', fontsize=12, ncol=2)
-    plt.show()
-    #plt.savefig('lc.png', dpi=100)
+    #plt.show()
+    plt.savefig('lc.png', dpi=100)
