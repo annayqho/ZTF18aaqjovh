@@ -192,6 +192,11 @@ if __name__=="__main__":
         tel = tels[ii]
         dt = epochs[ii]
         wl, flux, ivar = load_spec(f)
+        # Remove tellurics
+        if ii >= 4:
+            # wl 7150 to 7300
+            mask = np.logical_and(wl>7150, wl<7300)
+            ivar[mask] = 0
         choose = np.logical_and(wl>3660, wl < 9000)
         scale = flux[wl>4100][0]
         shifted = flux/scale-shift[ii]

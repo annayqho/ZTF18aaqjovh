@@ -58,7 +58,7 @@ outputf.write("\\tabletypesize{\scriptsize} \n")
 outputf.write("\startdata \n")
 
 data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/code/forced_phot"
-t0 = 58233.17615 # time of the last non-detection, in MJD
+t0 = 58233.17609999981 # time of the last non-detection, in MJD
 
 # g-band P48 photometry
 f = data_dir + "/ZTF18aaqjovh_force_phot_lc_g.txt"
