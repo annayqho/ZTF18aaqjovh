@@ -1,3 +1,4 @@
+from astropy.time import Time
 import numpy as np
 import sys
 sys.path.append("/Users/annaho/Dropbox/Projects/Research/ZTF_fast_transient_search/code")
@@ -19,7 +20,7 @@ def get_forced_phot(name,ra,dec,jdobs):
     ra: ra in decimal degrees
     dec: dec in decimal degrees
     """
-    start_jd = jdobs-10
+    start_jd = jdobs-200
     end_jd = jdobs+100
 
     zquery = query.ZTFQuery()
@@ -82,5 +83,5 @@ if __name__=="__main__":
     name = 'ZTF18aaqjovh'
     ra = 178.181754
     dec = 25.675033
-    jdobs = 2458256.7235
+    jdobs = Time("2018-04-25", format='isot').jd
     filt,jd,flux,eflux,mag,emag = get_forced_phot(name,ra,dec,jdobs)
