@@ -20,7 +20,10 @@ ddir = "/Users/annaho/Dropbox/Projects/Research/IcBL/data/xray_compilations"
 
 def plot_source(ax):
     # Chandra points
-    ax.scatter(33, 1.9E40, c=dark, marker='v')
+    ax.scatter(33, 1.9E40, c=dark, marker='s')
+    ax.arrow(
+            33, 1.9E40, 0, -1.6E40, length_includes_head=True, 
+            head_length=5E39, head_width=2, color=dark)
 
 
 def plot_98bw(ax, background=False):
@@ -135,17 +138,21 @@ def plot_17cw(ax, background=False):
 def plot_12ap(ax, background=False):
     """ Plot SN2012ap data
     """
-    # From MArgutti+ 2014
+    # From Margutti+ 2014
 
     col = 'lightgrey'
     if background is False:
         col = dark
 
-    ax.scatter(24, 2.4E39, c=col, marker='v')
+    ax.scatter(24, 2.4E39, c=col, marker='o')
+    ax.arrow(24, 2.4E39, 0, -2E39, length_includes_head=True,
+            head_length=5E38, head_width=2, color=col)
 
     if background is False:
         col = '#e55c30'
-    ax.scatter(24, 2.4E39, c=col, label="_nolegend_", marker='v')
+    ax.scatter(24, 2.4E39, c=col, label="_nolegend_", marker='o')
+    ax.arrow(24, 2.4E39, 0, -2E39, length_includes_head=True,
+            head_length=5E38, head_width=2, color=col)
 
     if background==False:
         ax.text(0.1, 0.1, "SN2012ap", fontsize=12, transform=ax.transAxes)
@@ -164,11 +171,11 @@ if __name__=="__main__":
         plot_17cw(ax, background=True)
         plot_98bw(ax, background=True)
         plot_09bb(ax, background=True)
-        ax.yaxis.set_tick_params(labelsize=14)
-        ax.xaxis.set_tick_params(labelsize=14)
+        ax.yaxis.set_tick_params(labelsize=12)
+        ax.xaxis.set_tick_params(labelsize=12)
         ax.set_yscale('log')
         ax.set_xlim(0, 40)
-        ax.set_ylim(1E39, 1E45)
+        ax.set_ylim(1E38, 1E45)
 
     plot_06aj(axarr[2,0], background=False)
     plot_0316d(axarr[1,0], background=False)
@@ -176,10 +183,10 @@ if __name__=="__main__":
     plot_17cw(axarr[2,1], background=False)
     plot_98bw(axarr[0,0], background=False)
     plot_09bb(axarr[0,1], background=False)
-    fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=16) 
+    fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=12) 
     fig.text(
             0.04, 0.5, r'0.3--10 keV X-ray Luminosity (erg/s)', 
-            fontsize=16, rotation='vertical', horizontalalignment='center',
+            fontsize=12, rotation='vertical', horizontalalignment='center',
             verticalalignment='center')
 
     fig.subplots_adjust(wspace=0.1, hspace=0.1)

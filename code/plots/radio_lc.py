@@ -255,8 +255,8 @@ if __name__=="__main__":
         plot_12ap(ax, background=True)
         plot_06aj(ax, background=True)
         plot_17cw(ax, background=True)
-        ax.yaxis.set_tick_params(labelsize=14)
-        ax.xaxis.set_tick_params(labelsize=14)
+        ax.yaxis.set_tick_params(labelsize=12)
+        ax.xaxis.set_tick_params(labelsize=12)
         ax.set_yscale('log')
         ax.set_xlim(0, 40)
         ax.set_ylim(1E26, 1E29)
@@ -268,10 +268,10 @@ if __name__=="__main__":
     plot_06aj(axarr[2,0])
     plot_17cw(axarr[2,1])
 
-    fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=16) 
+    fig.text(0.5, 0.04, r"$\Delta t$ (days)", ha='center', fontsize=14) 
     fig.text(
             0.04, 0.5, r'Radio Luminosity (erg/s/Hz)', 
-            fontsize=16, rotation='vertical', horizontalalignment='center',
+            fontsize=14, rotation='vertical', horizontalalignment='center',
             verticalalignment='center')
 
     fig.subplots_adjust(wspace=0.1, hspace=0.2)
@@ -283,7 +283,7 @@ if __name__=="__main__":
     ax.plot([1,2],[3,4],c=dark,label="4-8 GHz", lw=2)
     ax.plot([1,2],[3,4],c=yell,label="8-12 GHz", lw=2)
     ax.plot([1,2],[3,4],c=orag,label="12-18 GHz", lw=2)
-    ax.legend(loc='upper center', bbox_to_anchor=(0, 1.3), ncol=2)
+    ax.legend(loc='upper center', bbox_to_anchor=(0.0, 1.5), ncol=2)
 
     #plt.show()
     plt.savefig(

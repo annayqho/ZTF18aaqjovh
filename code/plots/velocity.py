@@ -32,7 +32,7 @@ def plot_18aaqjovh(ax):
     ax.errorbar(
             dt, vel/1E3, yerr=evel/1E3, 
             fmt='s', c='k', label="ZTF18aaqjovh", 
-            zorder=10, ms=10, lw=2)
+            zorder=10, ms=5, lw=1)
 
     ax.plot(dt,vel/1E3,
         c='k', ls='-', lw=3, zorder=5)
