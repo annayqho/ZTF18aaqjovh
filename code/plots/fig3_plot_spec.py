@@ -1,4 +1,6 @@
 """ Plot the spectral sequence of ZTF18aaqjovh
+This relies on having scripts from the following repository:
+    https://github.com/annayqho/Spectra
 """
 
 import matplotlib.pyplot as plt
@@ -18,7 +20,7 @@ from measure_snr import get_snr
 
 
 z = 0.05403
-SPEC_DIR = "Data/marshal/spectra/ZTF18aaqjovh"
+SPEC_DIR = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data/spectra"
 
 
 def get_res(tel):
@@ -58,9 +60,10 @@ def download_spec():
     # download light curves
     marshal.download_spectra('ZTF18aaqjovh')
 
+    # I moved all the spectra to the directory SPEC_DIR
+
     # return filenames
-    ddir = "Data/marshal/spectra/ZTF18aaqjovh"
-    f = glob.glob(ddir + "/*.ascii")
+    f = glob.glob(SPEC_DIR+ "/*.ascii")
     print(f)
     return f
 
@@ -186,14 +189,15 @@ if __name__=="__main__":
     fig,ax = plt.subplots(figsize=(6,10))
     files, epochs, tels = get_files(0, 6)
     nfiles = len(files)
-    shift = [0, 1, 1.5, 2, 3, 4]
+    shift = [1, 1.5, 2, 3, 4]
     bw_shift = [2.1, 3, 4, 6, 7.1]
     for ii,f in enumerate(files):
         tel = tels[ii]
         dt = epochs[ii]
         wl, flux, ivar = load_spec(f)
         # Remove tellurics
-        if ii >= 4:
+        if ii >= 3:
+            print(f)
             # wl 7150 to 7300
             mask = np.logical_and(wl>7150, wl<7300)
             ivar[mask] = 0
