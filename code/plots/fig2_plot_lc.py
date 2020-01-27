@@ -1,4 +1,5 @@
 """ Plot the light curve of ZTF18aaqjovh
+This is Fig 2 of our paper.
 
 Light curve was retrieved in ZTF_Tools/query_lc.py,
 and saved to a text file lc.dat
@@ -15,6 +16,7 @@ from astropy.cosmology import Planck15
 #import extinction
 
 
+data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data/phot"
 # time of the last non-detection
 t0 = 58233.17615 # in MJD
 # redshift
@@ -23,8 +25,7 @@ z = 0.05403
 
 def plot_98bw(ax):
     offset = 0.4
-    datadir = "/Users/annaho/Dropbox/Projects/Research/IcBL/data/optical_compilations"
-    dat = ascii.read(datadir + "/sn1998bw.dat", delimiter=';')
+    dat = ascii.read(data_dir + "/sn1998bw.dat", delimiter=';')
     jd = dat['JD']
     rband = dat['Rcmag']
     erband = dat['e_Rcmag']
@@ -48,7 +49,6 @@ def plot_98bw(ax):
 
 
 def load_lc(ax):
-    data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/code/forced_phot"
 
     # Plot r-band light curve
     f = data_dir + "/ZTF18aaqjovh_force_phot_lc_r.txt"
