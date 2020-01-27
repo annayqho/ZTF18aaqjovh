@@ -1,4 +1,6 @@
-""" Plot a host image from SDSS
+""" Plot an image of the host galaxy from SDSS 
+
+This is Figure 1 in our paper.
 """
 
 import numpy as np
