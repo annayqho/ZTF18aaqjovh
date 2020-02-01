@@ -92,40 +92,63 @@ def lumtnu(ax):
     ymin = ujy_to_flux(20, 0.05403)
     ymax = ujy_to_flux(30, 0.05403)
     yavg = (ymin+ymax)/2
-    ax.plot([xmin,xmax],[yavg,yavg],c='k')
-    ax.plot([xavg,xavg],[ymin,ymax],c='k')
+    ax.plot([xmin,xmax],[yavg,yavg],c='r')
+    ax.plot([xavg,xavg],[ymin,ymax],c='r')
     ax.text(
             xmax, ymin, "ZTF18aaqjovh", fontsize=medsize,
             verticalalignment='center',
-            horizontalalignment='right')
+            horizontalalignment='right', color='red')
 
     # iPTF17cw
     tnu = (16)*(2.8/5)
     lpeak = 1E28
     ax.scatter(
-            tnu, lpeak, marker='o', c='k', s=50,
+            tnu, lpeak, marker='+', c='red', s=100,
             label=None)
-    ax.arrow(
-            tnu, lpeak, -tnu/4, 0, color='k', 
-            head_length=tnu/10, head_width=lpeak/8)
-    ax.arrow(
-            tnu, lpeak, 0, lpeak/4, color='k', 
-            head_length=lpeak/5, head_width=tnu/8)
+    # ax.arrow(
+    #         tnu, lpeak, -tnu/4, 0, color='k', 
+    #         head_length=tnu/10, head_width=lpeak/8)
+    # ax.arrow(
+    #         tnu, lpeak, 0, lpeak/4, color='k', 
+    #         head_length=lpeak/5, head_width=tnu/8)
     ax.text(
             tnu, lpeak/1.2, "iPTF17cw", fontsize=medsize,
             verticalalignment='top',
-            horizontalalignment='left')
+            horizontalalignment='left', color='red')
+
+    # PTF14dby
+    tnu = (40)*(7.4/5)
+    lpeak = 2.7E28
+    ax.scatter(
+            tnu, lpeak, marker='+', c='r', s=100,
+            label=None)
+    ax.text(
+            tnu, lpeak/1.2, "PTF14dby", fontsize=medsize,
+            verticalalignment='top',
+            horizontalalignment='left', color='red')
+
+    # PTF11cmh
+    tnu = (100)*(5/5)
+    lpeak = 1E29
+    ax.scatter(
+            tnu, lpeak, marker='+', c='red', s=100,
+            label=None)
+    ax.text(
+            tnu, lpeak*1.1, "PTF11cmh", fontsize=medsize,
+            verticalalignment='bottom',
+            horizontalalignment='left', color='red')
+
 
     # 11qcj
     tnu = (100)*(5/5)
     lpeak = 7E28
     ax.scatter(
-            tnu, lpeak, marker='+', c='k', s=100,
+            tnu, lpeak, marker='+', c='red', s=100,
             label=None)
     ax.text(
-            tnu/1.2, lpeak, "11qcj", fontsize=medsize,
+            tnu*1.15, lpeak, "PTF11qcj", fontsize=medsize,
             verticalalignment='center',
-            horizontalalignment='right')
+            horizontalalignment='left', color='red')
 
 
     # 2007bg
@@ -134,9 +157,9 @@ def lumtnu(ax):
     ax.scatter(
             tnu, lpeak, marker='+', c='k', s=100, label=None)
     ax.text(
-            tnu, lpeak*1.2, "2007bg", fontsize=medsize,
+            tnu, lpeak*1.1, "2007bg", fontsize=smallsize,
             verticalalignment='bottom',
-            horizontalalignment='center')
+            horizontalalignment='right')
 
     # SN 2003bg
     tnu = (35)*(22.5/5)
@@ -144,7 +167,7 @@ def lumtnu(ax):
     ax.scatter(
             tnu, lpeak, marker='+', c='k', s=100, label=None)
     ax.text(
-            tnu, lpeak/1.1, "2003bg", fontsize=medsize,
+            tnu, lpeak/1.1, "2003bg", fontsize=smallsize,
             verticalalignment='top',
             horizontalalignment='left')
 
@@ -155,7 +178,7 @@ def lumtnu(ax):
             tnu, lpeak, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label="LLGRB-SN")
     ax.text(
-            tnu, lpeak*1.2, "1998bw", fontsize=medsize,
+            tnu, lpeak*1.2, "1998bw", fontsize=smallsize,
             verticalalignment='bottom',
             horizontalalignment='center')
 
@@ -168,7 +191,7 @@ def lumtnu(ax):
             tnu, lpeak, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label=None)
     ax.text(
-            tnu, lpeak*1.2, "171205A", fontsize=medsize,
+            tnu, lpeak*1.2, "171205A", fontsize=smallsize,
             verticalalignment='bottom',
             horizontalalignment='center')
 
@@ -179,7 +202,7 @@ def lumtnu(ax):
     ax.scatter(
             tnu, lpeak, marker='+', c='k', s=100, label="Ic-BL no GRB")
     ax.text(
-            tnu/1.2, lpeak, "2009bb", fontsize=medsize,
+            tnu/1.2, lpeak, "2009bb", fontsize=smallsize,
             verticalalignment='center',
             horizontalalignment='right')
 
@@ -190,7 +213,7 @@ def lumtnu(ax):
             tnu, lpeak, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label=None)
     ax.text(
-            tnu, lpeak/1.3, "2006aj", fontsize=medsize,
+            tnu, lpeak/1.3, "2006aj", fontsize=smallsize,
             verticalalignment='top',
             horizontalalignment='center')
 
@@ -201,7 +224,7 @@ def lumtnu(ax):
             tnu, lpeak, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label=None)
     ax.text(
-            tnu, lpeak*1.1, "2010bh", fontsize=medsize,
+            tnu, lpeak*1.1, "2010bh", fontsize=smallsize,
             verticalalignment='bottom',
             horizontalalignment='center')
 
@@ -211,17 +234,17 @@ def lumtnu(ax):
     y = vel_lines(ax, 550, 0.01)
 
     # AT2018cow
-    x1 = 22*100/5
-    y1 = 4.4E29
-    ax.scatter(
-            x1, y1, marker='*', s=100, 
-            facecolors='black', edgecolors='black')
-    ax.text(
-            22*100/7, 5.5E29, "AT2018cow", fontsize=medsize, 
-            verticalalignment='bottom', 
-            horizontalalignment='left')
+    # x1 = 22*100/5
+    # y1 = 4.4E29
+    # ax.scatter(
+    #         x1, y1, marker='*', s=100, 
+    #         facecolors='black', edgecolors='black')
+    # ax.text(
+    #         22*100/7, 5.5E29, "AT2018cow", fontsize=medsize, 
+    #         verticalalignment='bottom', 
+    #         horizontalalignment='left')
 
-    ax.set_xlim(2, 3000)
+    ax.set_xlim(2, 1000)
     ax.set_ylim(5E26, 1E30)
     ax.set_xscale('log')
     ax.set_yscale('log')
@@ -257,11 +280,11 @@ ax2.set_ylim((y_f(ymin), y_f(ymax)))
 ax2.plot([],[])
 ax2.set_yscale('log')
 ax2.tick_params(axis='both', labelsize=bigsize)
-ax2.set_xlim(2,3000)
+ax2.set_xlim(2,1000)
 
 
 plt.tight_layout()
 
 
-plt.show()
-#plt.savefig("lum_tnu.png", dpi=500)
+#plt.show()
+plt.savefig("lum_tnu_proposal.png", dpi=500)
