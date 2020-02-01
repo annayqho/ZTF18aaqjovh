@@ -99,6 +99,23 @@ def lumtnu(ax):
             verticalalignment='center',
             horizontalalignment='right')
 
+    # iPTF17cw
+    tnu = (16)*(2.8/5)
+    lpeak = 1E28
+    ax.scatter(
+            tnu, lpeak, marker='o', c='k', s=50,
+            label=None)
+    ax.arrow(
+            tnu, lpeak, -tnu/4, 0, color='k', 
+            head_length=tnu/10, head_width=lpeak/8)
+    ax.arrow(
+            tnu, lpeak, 0, lpeak/4, color='k', 
+            head_length=lpeak/5, head_width=tnu/8)
+    ax.text(
+            tnu, lpeak/1.2, "iPTF17cw", fontsize=medsize,
+            verticalalignment='top',
+            horizontalalignment='left')
+
     # 11qcj
     tnu = (100)*(5/5)
     lpeak = 7E28
@@ -184,8 +201,8 @@ def lumtnu(ax):
             tnu, lpeak, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label=None)
     ax.text(
-            tnu, lpeak/1.3, "2010bh", fontsize=medsize,
-            verticalalignment='top',
+            tnu, lpeak*1.1, "2010bh", fontsize=medsize,
+            verticalalignment='bottom',
             horizontalalignment='center')
 
     # Lines
@@ -246,5 +263,5 @@ ax2.set_xlim(2,3000)
 plt.tight_layout()
 
 
-#plt.show()
-plt.savefig("lum_tnu.png", dpi=500)
+plt.show()
+#plt.savefig("lum_tnu.png", dpi=500)
