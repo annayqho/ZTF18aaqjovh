@@ -1,0 +1,41 @@
+Ic   ;SN 1983V
+Ic   ;SN 1990B
+Ic   ;SN 1992ar
+Ic   ;SN 1994I
+Ic   ;SN 2004aw
+Ic   ;SN 2004dn
+Ic   ;SN 2004fe
+Ic   ;SN 2004ge
+Ic   ;SN 2004gt
+Ic   ;SN 2005az
+Ic   ;SN 2005kl
+Ic   ;SN 2005mf
+Ic   ;SN 2007cl
+Ic   ;SN 2007gr
+Ic   ;SN 2011bm
+Ic   ;PTF12gzk
+Ic   ;SN 2013dk
+Ic-bl;SN 1997ef
+Ic-bl;SN 2002ap
+Ic-bl;SN 2003jd
+Ic-bl;SN 2007D
+Ic-bl;SN 2007bg
+Ic-bl;SN 2007ru
+Ic-bl;SN 2010ay
+Ic-bl;PTF10bzf
+Ic-bl;PTF10qts
+Ic-bl;PTF10vgv
+Ic-bl;SN 1998bw/GRB 980425
+Ic-bl;SN 2003dh/GRB 030329
+Ic-bl;SN 2003lw/GRB 031203
+Ic-bl;SN 2006aj/GRB 060218
+Ic-bl;SN 2009bb
+Ic-bl;SN 2009nz/GRB 091127
+Ic-bl;SN 2010bh/GRB 100316D
+Ic-bl;SN 2010ma/GRB 101219B
+Ic-bl;SN 2012ap
+Ic-bl;SN 2012bz/GRB 120422A
+Ic-bl;SN 2013cq/GRB 130427A
+Ic-bl;SN 2013dx/GRB 130702A
+Ic-bl;SN 2013ez/GRB 130215A
+
