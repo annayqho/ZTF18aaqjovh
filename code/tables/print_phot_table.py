@@ -57,7 +57,7 @@ outputf.write("\\tablehead{ %s } \n" %colheadstr)
 outputf.write("\\tabletypesize{\scriptsize} \n")
 outputf.write("\startdata \n")
 
-data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/code/forced_phot"
+data_dir = "/Users/annaho/Dropbox/Projects/Research/ZTF18aaqjovh/data/phot"
 t0 = 58233.17609999981 # time of the last non-detection, in MJD
 
 # g-band P48 photometry
@@ -91,7 +91,7 @@ mjd = np.hstack((mjd, [2458247.8588-2400000.5, 2458248.8353-2400000.5]))
 tel = np.hstack((tel, ['P60', 'P60']))
 mag = np.hstack((mag, [18.30, 18.21]))
 emag = np.hstack((emag, [0.04, 0.03]))
-filt = np.hstack((filt, np.array(['r']*ndet)))
+filt = np.hstack((filt, np.array(['$r$']*ndet)))
 
 # generate dt
 dt = mjd-t0

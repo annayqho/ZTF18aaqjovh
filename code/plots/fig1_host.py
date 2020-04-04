@@ -77,5 +77,5 @@ ax.text((x2+x)/2, y/1.1, "5''", color='white', fontsize=16,
 
 #plt.show()
 plt.savefig(
-"host.png", format='png', dpi=500, bbox_inches = 'tight', pad_inches = 0)
+"host.eps", format='eps', dpi=500, bbox_inches = 'tight', pad_inches = 0)
 

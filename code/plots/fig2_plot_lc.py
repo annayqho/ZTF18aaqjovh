@@ -24,21 +24,25 @@ z = 0.05403
 
 
 def plot_98bw(ax):
-    offset = 0.4
+    offset = 0.5
     dat = ascii.read(data_dir + "/sn1998bw.dat", delimiter=';')
     jd = dat['JD']
     rband = dat['Rcmag']
     erband = dat['e_Rcmag']
+    # Extinction is 0.127 in R-band in this direction
     dm = Planck15.distmod(z=z).value-Planck15.distmod(z=0.0085).value
-    ax.plot(jd-jd[0], rband+dm, color='#e55c30', lw=1.5, label="98bw $Rc$")
+    ax.plot(jd-jd[0], rband+dm-0.127, color='#e55c30', lw=1.5, 
+            label="98bw $Rc$")
     ax.plot(
-            (jd-jd[0])/(1.0085), (rband+dm)+offset, color='#e55c30', 
+            (jd-jd[0])/(1.0085), (rband+dm)+offset-0.127, color='#e55c30', 
             lw=0.5, ls='--', label="98bw $Rc$+%s mag" %offset)
     gband = dat['Bmag']
     egband = dat['e_Bmag']
-    ax.plot(jd-jd[0], gband+dm, color='#140b34', lw=1.5, label="98bw $B$")
+    # Extinction is 0.212 in B-band in this direction
+    ax.plot(jd-jd[0], gband+dm-0.212, color='#140b34', lw=1.5, 
+            label="98bw $B$")
     ax.plot(
-            (jd-jd[0])/(1.0085), (gband+dm)+offset, color='#140b34', 
+            (jd-jd[0])/(1.0085), (gband+dm)+offset-0.212, color='#140b34', 
             lw=0.5, ls='--', label="98bw $B$+%s mag" %offset)
     ax.axvline(x=-0.1, c='k', lw=0.5)
     ax.text(0,18.7,'GRB 980425', fontsize=10, rotation=270)
