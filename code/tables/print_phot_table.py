@@ -28,7 +28,7 @@ headings = np.array(
         ['Date (JD)', '$\Delta t$', 'Instrument', 'Filter', 
          'AB Mag', 'Error in AB Mag'])
 label = "opt-phot"
-caption = "Optical photometry for ZTF18aaqjovh"
+caption = "Optical light curve of ZTF18aaqjovh from forced photometry on P48 images \citep{Yao2019}. Values have been corrected for Milky Way extinction. Phase is relative to $t_0$ defined in Section \ref{sec:discovery}."
 
 # Print the table headers
 ncol = len(headings)
@@ -120,7 +120,7 @@ for ii in np.arange(len(dt)):
         mag_str = '{:.2f}'.format(round_sig(mag[ii], 4))
         emag_str = '{:.2f}'.format(np.round(emag[ii], ndec(mag_str)))
         row = rowstr %(
-                mjd_str, dt_str, tel[ii], filt[ii], 
+                mjd_str, dt_str, tel[ii], "$%s$" %filt[ii], 
                 mag_str, emag_str)
         outputf.write(row)
 
