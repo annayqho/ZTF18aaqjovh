@@ -230,4 +230,4 @@ if __name__=="__main__":
     ax.get_yaxis().set_ticks([])
     plt.tight_layout()
     #plt.show()
-    plt.savefig("spec_sequence.png", dpi=500, bbox_inches='tight')
+    plt.savefig("spec_sequence.eps", dpi=500, bbox_inches='tight')

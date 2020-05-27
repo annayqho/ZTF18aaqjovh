@@ -116,4 +116,4 @@ if __name__=="__main__":
     ax.legend(loc='lower center', fontsize=12, ncol=2)
     fig.tight_layout()
     #plt.show()
-    plt.savefig('lc.png', dpi=100)
+    plt.savefig('lc.eps', dpi=300)

@@ -25,8 +25,7 @@ def ndec(num):
 d = Planck15.luminosity_distance(z=0.05403).cgs.value
 
 headings = np.array(
-        ['Date (JD)', '$\Delta t$', 'Instrument', 'Filter', 
-         'AB Mag', 'Error in AB Mag'])
+        ['Date', '$\Delta t$', 'Instr.', 'Filt.', 'Mag'])
 label = "opt-phot"
 caption = "Optical light curve of ZTF18aaqjovh from forced photometry on P48 images \citep{Yao2019}. Values have been corrected for Milky Way extinction. Phase is relative to $t_0$ defined in Section \ref{sec:discovery}."
 
@@ -49,7 +48,7 @@ rowstr += "%s \\\ \n"
 
 outputf = open("table_%s.txt" %label, "w")
 outputf.write("\\startlongtable \n")
-outputf.write("\\begin{deluxetable*}{%s} \n" %colstr)
+outputf.write("\\begin{deluxetable}{%s} \n" %colstr)
 outputf.write("\\tablecaption{%s\label{tab:%s}} \n" %(caption,label))
 outputf.write("\\tablewidth{0pt} \n")
 outputf.write("\\tablehead{ %s } \n" %colheadstr)
@@ -119,10 +118,10 @@ for ii in np.arange(len(dt)):
         dt_str = '{:.2f}'.format(np.round(dt[ii], 2))
         mag_str = '{:.2f}'.format(round_sig(mag[ii], 4))
         emag_str = '{:.2f}'.format(np.round(emag[ii], ndec(mag_str)))
+        comb = "$%s \pm %s$" %(mag_str, emag_str)
         row = rowstr %(
-                mjd_str, dt_str, tel[ii], "$%s$" %filt[ii], 
-                mag_str, emag_str)
+                mjd_str, dt_str, tel[ii], "$%s$" %filt[ii], comb)
         outputf.write(row)
 
 outputf.write("\enddata \n")
-outputf.write("\end{deluxetable*} \n")
+outputf.write("\end{deluxetable} \n")
